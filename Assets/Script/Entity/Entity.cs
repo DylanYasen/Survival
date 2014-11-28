@@ -1,0 +1,39 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public abstract class Entity : MonoBehaviour
+{
+    public string entityName;
+    public int ID;
+    public EntityStats m_stats;
+
+    public Animator m_anim { get; private set; }
+
+    public GameObject collidedObj { get; protected set; }
+    public Entity collidedEntity { get; protected set; }
+    public string collidedObjTag { get; protected set; }
+    public LayerMask collidedObjLayer { get; protected set; }
+
+    protected Player player { get; private set; }
+
+    protected virtual void Awake()
+    {
+        m_stats.Init(this);
+        m_anim = GetComponent<Animator>();
+    }
+
+    protected virtual void Start()
+    {
+        player = Player.instance;
+    }
+
+    public virtual void Die()
+    {
+        Destroy(gameObject);
+
+        // disable collider box
+        // play anim & sfx
+        // give back to object pool
+    }
+
+}
