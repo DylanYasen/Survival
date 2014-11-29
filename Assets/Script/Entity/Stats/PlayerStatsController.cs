@@ -59,15 +59,21 @@ public class PlayerStatsController : MonoBehaviour
     public void AddWarmth(int amt = 1, float addWarmthRate = 1)
     {
         warmthTimer += Time.deltaTime;
-        
+
         if (warmthTimer >= addWarmthRate)
         {
             m_stats.AddWarmth(amt);
             warmthTimer -= addWarmthRate;
+
+            // talk
+            /*if (m_stats.cur_warmth != m_stats.MaxWarmth)
+            {
+                HudTextManager.instance.CreateFloatText(m_entity.floatTextSpawnPoint.position, "", Color.green);
+                //HudTextManager.instance.CreateFloatText(m_entity.floatTextSpawnPoint.position, "温暖 ++", Color.green);
+            }
+             */
         }
     }
-
-
 
     private void UpdateHunger()
     {
@@ -81,6 +87,16 @@ public class PlayerStatsController : MonoBehaviour
 
         // lost health if too low
         // maybe better to a threshold
+
+        // talk
+        /*
+        if (m_stats.cur_warmth != m_stats.MaxWarmth)
+        {
+            HudTextManager.instance.CreateFloatText(m_entity.floatTextSpawnPoint.position, "I'm so hungry", Color.green);
+            //HudTextManager.instance.CreateFloatText(m_entity.floatTextSpawnPoint.position, "温暖 ++", Color.green);
+        }
+         */
+
         if (m_stats.cur_hunger <= 0)
             UpdateHealth();
     }
@@ -129,8 +145,14 @@ public class PlayerStatsController : MonoBehaviour
 
         if (healthTimer > dropHealthRate)
         {
+            //HudTextManager.instance.CreateFloatText(m_entity.floatTextSpawnPoint.position, "Health --", Color.red);
+
             m_stats.LoseHP();
             healthTimer -= dropHealthRate;
+
         }
     }
 }
+
+
+ 

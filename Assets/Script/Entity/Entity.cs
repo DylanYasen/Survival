@@ -6,6 +6,7 @@ public abstract class Entity : MonoBehaviour
     public string entityName;
     public int ID;
     public EntityStats m_stats;
+    public Transform floatTextSpawnPoint;
 
     public Animator m_anim { get; private set; }
 
@@ -20,6 +21,8 @@ public abstract class Entity : MonoBehaviour
     {
         m_stats.Init(this);
         m_anim = GetComponent<Animator>();
+
+        floatTextSpawnPoint = gameObject.transform.FindChild("floatTextPoint");
     }
 
     protected virtual void Start()

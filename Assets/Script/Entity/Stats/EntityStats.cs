@@ -130,5 +130,12 @@ public class EntityStats
         int addAmt = Mathf.Clamp(amt, 0, MaxWarmth - cur_warmth);
 
         cur_warmth += addAmt;
+
+        if (cur_warmth != MaxWarmth)
+        {
+            //HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "Warmth ++", Color.magenta);
+            HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "温暖 ++", Color.magenta);
+        }
+
     }
 }
