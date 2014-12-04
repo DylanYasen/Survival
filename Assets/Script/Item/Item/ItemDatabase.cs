@@ -29,16 +29,42 @@ public class ItemDatabase : MonoBehaviour
 
 
         // init weapon spritesheet
-        weaponSprites = Resources.LoadAll<Sprite>("itemSprite");
-        weaponSpriteSheet = new Dictionary<string, Sprite>();
+        // weaponSprites = Resources.LoadAll<Sprite>("itemSprite");
+        // weaponSpriteSheet = new Dictionary<string, Sprite>();
 
         // store item sprite in dictionary
-        for (int i = 0; i < weaponSprites.Length; i++)
-            weaponSpriteSheet.Add(weaponSprites[i].name, weaponSprites[i]);
+        //for (int i = 0; i < weaponSprites.Length; i++)
+        //    weaponSpriteSheet.Add(weaponSprites[i].name, weaponSprites[i]);
 
         // items
         int itemIDCounter = -1;
 
+        ConsumableItem rawMeat = new ConsumableItem();
+        rawMeat.itemName = "Meat";
+        rawMeat.itemID = ++itemIDCounter;
+        //rawMeat.itemDes = "Raw Meat";
+        rawMeat.itemDes = "羊腿把子";
+
+        rawMeat.itemAmount = 1;
+        //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
+        //refreshingWater.InitEffect();
+        rawMeat.LoadIcon();
+        items.Add(rawMeat);
+
+
+        ConsumableItem logs = new ConsumableItem();
+        logs.itemName = "Logs";
+        logs.itemID = ++itemIDCounter;
+        //logs.itemDes = "Logs";
+        logs.itemDes = "木材";
+
+        logs.itemAmount = 1;
+        //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
+        //refreshingWater.InitEffect();
+        logs.LoadIcon();
+        items.Add(logs);
+
+        /*
         EquipableItem axe = new EquipableItem();
         axe.itemName = "Axe";
         axe.itemID = ++itemIDCounter;
@@ -133,15 +159,24 @@ public class ItemDatabase : MonoBehaviour
         rawTurkey.LoadIcon();
         items.Add(rawTurkey);
 
-        ConsumableItem refreshingWater = new ConsumableItem();
-        refreshingWater.itemName = "Refreshing Water";
-        refreshingWater.itemID = ++itemIDCounter;
-        refreshingWater.itemDes = "Soothingly hydrating, this item immediately gives the player 4 SP.";
-        refreshingWater.itemAmount = 1;
-        refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
-        refreshingWater.InitEffect();
-        refreshingWater.LoadIcon();
-        items.Add(refreshingWater);
-
+         */
     }
+
+
+    public Item GetItemData(int id)
+    {
+        for (int i = 0; i < ItemDatabase.instance.items.Count; i++)
+        {
+            // if find matched item 
+            if (ItemDatabase.instance.items[i].itemID == id)
+            {
+                return items[i];
+            }
+        }
+
+        Debug.Log("item not found");
+
+        return null;
+    }
+
 }

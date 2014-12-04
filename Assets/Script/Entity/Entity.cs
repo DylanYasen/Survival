@@ -23,6 +23,7 @@ public abstract class Entity : MonoBehaviour
         m_anim = GetComponent<Animator>();
 
         floatTextSpawnPoint = gameObject.transform.FindChild("floatTextPoint");
+
     }
 
     protected virtual void Start()

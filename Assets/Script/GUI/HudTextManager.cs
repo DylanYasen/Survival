@@ -44,10 +44,10 @@ public class HudTextManager : MonoBehaviour
         toPos = fromPos;
         toPos.y += 40;
 
-        textObj.Show(fromPos,toPos,text,Color.red,1);
+        textObj.Show(fromPos, toPos, text, 15, Color.red, 1);
     }
 
-    public void CreateFloatText(Vector3 position, string text, Color textColor, float floatDistance = 40, float floatDuration = 1f)
+    public void CreateFloatText(Vector3 position, string text, Color textColor, int fontSize = 10, float floatDistance = 40, float floatDuration = 1f)
     {
         FloatingText textObj = GetPooledFloatText(); // get a pooled text 
 
@@ -55,7 +55,7 @@ public class HudTextManager : MonoBehaviour
         toPos = fromPos;
         toPos.y += floatDistance;
 
-        textObj.Show(fromPos, toPos, text, textColor, floatDuration);
+        textObj.Show(fromPos, toPos, text, fontSize, textColor, floatDuration);
     }
 
 

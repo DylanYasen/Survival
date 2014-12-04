@@ -22,7 +22,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
     void Awake()
     {
         itemIcon = gameObject.transform.GetChild(0).GetComponent<Image>();
-        itemAmountGUI = gameObject.transform.GetChild(1).GetComponent<Text>();
+        itemAmountGUI = itemIcon.transform.GetChild(0).GetComponent<Text>();
     }
 
     void Update()

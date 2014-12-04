@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pickup : MonoBehaviour
+public class Pickup : StaticEntity
 {
     public string itemName;
     public int itemID = -1;
     public int itemAmount;
 
-    void OnTriggerEnter2D(Collider2D other)
+
+    protected override void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
+
         if (other.tag == "Player")
         {
             if (itemID < 0)
@@ -24,7 +27,12 @@ public class Pickup : MonoBehaviour
             // add effects here
             // ****************
 
+            string hud = ItemDatabase.instance.GetItemData(itemID).itemDes;
+
+            HudTextManager.instance.CreateFloatText(floatTextSpawnPoint.position, hud, Color.black, 10, 40, 2);
+
             Destroy(gameObject);
         }
+
     }
 }

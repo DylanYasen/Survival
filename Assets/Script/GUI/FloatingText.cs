@@ -37,12 +37,13 @@ public class FloatingText : MonoBehaviour
     }
     */
 
-    public void Show(Vector3 fromPos, Vector3 toPos, string text, Color textColor, float duration = 1)
+    public void Show(Vector3 fromPos, Vector3 toPos, string text, int fontSize, Color textColor, float duration = 1)
     {
         this.toPos = toPos;
         this.floatDuration = duration;
         m_rectTrans.position = fromPos;
         m_text.text = text;
+        m_text.fontSize = fontSize;
         m_text.color = textColor;
 
         //movement = Vector2.Lerp(m_rectTrans.position, toPos, 0.4f);

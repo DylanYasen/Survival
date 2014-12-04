@@ -14,6 +14,8 @@ public class Inventory : MonoBehaviour
     List<InventorySlot> slots = new List<InventorySlot>();
 
     public InventoryPanel panel { get; private set; }
+    private RectTransform panelRectrans;
+    private RectTransform dragItemIconRectrans;
 
     void Awake()
     {
@@ -34,23 +36,13 @@ public class Inventory : MonoBehaviour
             slots[i].inventory = this;
         }
 
-        AddItemByID(0);
-        AddItemByID(1);
-        AddItemByID(2);
-        AddItemByID(3);
-        AddItemByID(4);
-        AddItemByID(5);
-        AddItemByID(6);
-        AddItemByID(7);
-        AddItemByID(7);
-        AddItemByID(7);
-        AddItemByID(8);
-        AddItemByID(8);
-        AddItemByID(8);
-        AddItemByID(8);
+        panelRectrans = panel.GetComponent<RectTransform>();
+        dragItemIconRectrans = panel.dragItemIcon.GetComponent<RectTransform>();
+
+        //AddItemByID(0);
 
         // deactivate inventory gui
-        panel.gameObject.SetActive(false);
+        //panel.gameObject.SetActive(false);
     }
 
 
@@ -59,8 +51,8 @@ public class Inventory : MonoBehaviour
         // drag item 
         if (isDraggingItem)
         {
-            Vector3 pos = (Input.mousePosition - GameObject.FindGameObjectWithTag("Canvas").GetComponent<RectTransform>().localPosition);
-            panel.dragItemIcon.GetComponent<RectTransform>().localPosition = new Vector2(pos.x + 15, pos.y - 15);
+            //Vector3 pos = (Input.mousePosition - panelRectrans.position);
+            //dragItemIconRectrans.po = new Vector2(pos.x - 25, pos.y - 25);
         }
     }
 
@@ -69,7 +61,10 @@ public class Inventory : MonoBehaviour
     {
         // guard
         if (ItemDatabase.instance == null)
+        {
             Debug.Log("itemdatabase is null");
+            return;
+        }
 
         // search through database
         for (int i = 0; i < ItemDatabase.instance.items.Count; i++)
@@ -80,19 +75,22 @@ public class Inventory : MonoBehaviour
                 // get item data
                 Item item = ItemDatabase.instance.items[i];
 
+                Debug.Log(item.itemName);
+
                 // check for consumable
-                if (item is ConsumableItem)
-                    // stack if exists
-                    // create new if not
-                    CheckIfItemExist(id, item);
+                //if (item is ConsumableItem)
+                // stack if exists
+                // create new if not
+                //  CheckIfItemExist(id, item);
 
                 // not consumable, add it normally
-                else
-                    addItemToEmptySlot(item);
+                //else
+                addItemToEmptySlot(item);
 
                 break;
             }
         }
+
     }
 
     void addItemToEmptySlot(Item item)
@@ -106,6 +104,7 @@ public class Inventory : MonoBehaviour
                 break;
             }
         }
+
     }
 
     public void CheckIfItemExist(int id, Item item)
@@ -115,6 +114,7 @@ public class Inventory : MonoBehaviour
             // same item exist
             if (items[i].itemID == id)
             {
+                Debug.Log("exist");
                 // add up amount
                 items[i].itemAmount = items[i].itemAmount + 1;
                 break;
@@ -124,8 +124,10 @@ public class Inventory : MonoBehaviour
             else if (i == items.Count - 1)
             {
                 addItemToEmptySlot(item);
+
             }
         }
+
     }
 
 
@@ -149,12 +151,12 @@ public class Inventory : MonoBehaviour
 
     public void ShowItemDescription(Item item)
     {
-        panel.itemDesGUI.text = item.itemDes;
+        //panel.itemDesGUI.text = item.itemDes;
     }
 
     public void HideItemDescription()
     {
-        panel.itemDesGUI.text = "";
+        //panel.itemDesGUI.text = "";
     }
 
 }
