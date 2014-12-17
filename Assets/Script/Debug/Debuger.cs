@@ -15,31 +15,11 @@ public class Debuger : MonoBehaviour
         m_inputField = GetComponent<InputField>();
         m_inputFieldImage = GetComponent<Image>();
 
-        m_inputFieldImage.enabled = false;
+       // m_inputFieldImage.enabled = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            activeToggle = !activeToggle;
-
-            if (activeToggle)
-            {
-                Time.timeScale = 0;
-                m_inputFieldImage.enabled = true;
-                EventSystem.current.SetSelectedGameObject(m_inputField.gameObject, null);
-            }
-            else
-            {
-                Time.timeScale = 1;
-                m_inputFieldImage.enabled = false;
-                ProcessInput(m_inputField.text);
-                m_inputField.text = "";
-                EventSystem.current.SetSelectedGameObject(Player.instance.gameObject, null);
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             //HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "I need some food", Color.black);
@@ -58,7 +38,6 @@ public class Debuger : MonoBehaviour
             //HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "I'm exhausted", Color.cyan);
             HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "跑的我累求子的", Color.black);
         }
-
     }
 
     void ProcessInput(string str)

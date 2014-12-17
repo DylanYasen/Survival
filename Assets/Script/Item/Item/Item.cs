@@ -15,6 +15,7 @@ public class Item
 
     public Item()
     {
+        itemName = null;
     }
 
     public void LoadIcon()

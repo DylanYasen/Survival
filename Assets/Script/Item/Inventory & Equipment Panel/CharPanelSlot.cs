@@ -124,7 +124,7 @@ public class CharPanelSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
             else
                 charPanel.items[index] = draggedItem;
 
-            inventory.HideDraggedItem();
+            //inventory.HideDraggedItem();
 
             return true;
         }
@@ -168,157 +168,157 @@ public class CharPanelSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         return false;
     }
 }
-    /*
-     * 
-     * old script in equipToSlot
-    switch (index)
-    {
-        case 0:
-            if (draggedItem.equipType == EquipableItem.EquipType.Head)
+/*
+ * 
+ * old script in equipToSlot
+switch (index)
+{
+    case 0:
+        if (draggedItem.equipType == EquipableItem.EquipType.Head)
+        {
+            // slot not empty
+            if (ContainsItem())
             {
-                // slot not empty
-                if (ContainsItem())
-                {
-                    Item tempItem = charPanel.items[index];
-                    charPanel.items[index] = draggedItem;
-                    //InventoryPanel.instance.inventory.draggedItem = tempItem;
-                    InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
-                    // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
+                Item tempItem = charPanel.items[index];
+                charPanel.items[index] = draggedItem;
+                //InventoryPanel.instance.inventory.draggedItem = tempItem;
+                InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
+                // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
 
-                    draggedItem.ActiveItemEffect();
-                }
-
-                // slot empty
-                else
-                    charPanel.items[index] = draggedItem;
-
-                InventoryPanel.instance.inventory.HideDraggedItem();
-
-                return true;
+                draggedItem.ActiveItemEffect();
             }
-            break;
 
-        case 1:
-            if (draggedItem.equipType == EquipableItem.EquipType.Body)
+            // slot empty
+            else
+                charPanel.items[index] = draggedItem;
+
+            InventoryPanel.instance.inventory.HideDraggedItem();
+
+            return true;
+        }
+        break;
+
+    case 1:
+        if (draggedItem.equipType == EquipableItem.EquipType.Body)
+        {
+            // slot not empty
+            if (ContainsItem())
             {
-                // slot not empty
-                if (ContainsItem())
-                {
-                    Item tempItem = charPanel.items[index];
-                    charPanel.items[index] = draggedItem;
-                    //InventoryPanel.instance.inventory.draggedItem = tempItem;
-                    InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
+                Item tempItem = charPanel.items[index];
+                charPanel.items[index] = draggedItem;
+                //InventoryPanel.instance.inventory.draggedItem = tempItem;
+                InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
 
-                    // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
-                }
-
-                // slot empty
-                else
-                    charPanel.items[index] = draggedItem;
-
-                InventoryPanel.instance.inventory.HideDraggedItem();
-
-                return true;
+                // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
             }
-            break;
 
-        case 2:
-            if (draggedItem.equipType == EquipableItem.EquipType.Legs)
+            // slot empty
+            else
+                charPanel.items[index] = draggedItem;
+
+            InventoryPanel.instance.inventory.HideDraggedItem();
+
+            return true;
+        }
+        break;
+
+    case 2:
+        if (draggedItem.equipType == EquipableItem.EquipType.Legs)
+        {
+            // slot not empty
+            if (ContainsItem())
             {
-                // slot not empty
-                if (ContainsItem())
-                {
-                    Item tempItem = charPanel.items[index];
-                    charPanel.items[index] = draggedItem;
-                    //InventoryPanel.instance.inventory.draggedItem = tempItem;
-                    InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
+                Item tempItem = charPanel.items[index];
+                charPanel.items[index] = draggedItem;
+                //InventoryPanel.instance.inventory.draggedItem = tempItem;
+                InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
 
-                    // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
-                }
-
-                // slot empty
-                else
-                    charPanel.items[index] = draggedItem;
-
-                InventoryPanel.instance.inventory.HideDraggedItem();
-
-                return true;
+                // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
             }
-            break;
 
-        case 3:
-            if (draggedItem.equipType == EquipableItem.EquipType.Weapon)
+            // slot empty
+            else
+                charPanel.items[index] = draggedItem;
+
+            InventoryPanel.instance.inventory.HideDraggedItem();
+
+            return true;
+        }
+        break;
+
+    case 3:
+        if (draggedItem.equipType == EquipableItem.EquipType.Weapon)
+        {
+            // slot not empty
+            if (ContainsItem())
             {
-                // slot not empty
-                if (ContainsItem())
-                {
-                    // add item to slot
-                    Item tempItem = charPanel.items[index];
-                    charPanel.items[index] = draggedItem;
-                    //InventoryPanel.instance.inventory.draggedItem = tempItem;
-                    InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
-                    // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
-                }
-
-                // slot empty
-                else
-                    charPanel.items[index] = draggedItem;
-
-                InventoryPanel.instance.inventory.HideDraggedItem();
-
-                print("testing!!!!!!!!!!!!" + " index is " + index + " weapon state is " + (int)draggedItem.equipType);
-
-                return true;
+                // add item to slot
+                Item tempItem = charPanel.items[index];
+                charPanel.items[index] = draggedItem;
+                //InventoryPanel.instance.inventory.draggedItem = tempItem;
+                InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
+                // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
             }
-            break;
 
-        case 4:
-            if (draggedItem.equipType == EquipableItem.EquipType.Accessory)
+            // slot empty
+            else
+                charPanel.items[index] = draggedItem;
+
+            InventoryPanel.instance.inventory.HideDraggedItem();
+
+            print("testing!!!!!!!!!!!!" + " index is " + index + " weapon state is " + (int)draggedItem.equipType);
+
+            return true;
+        }
+        break;
+
+    case 4:
+        if (draggedItem.equipType == EquipableItem.EquipType.Accessory)
+        {
+            // slot not empty
+            if (ContainsItem())
             {
-                // slot not empty
-                if (ContainsItem())
-                {
-                    Item tempItem = charPanel.items[index];
-                    charPanel.items[index] = draggedItem;
-                    //InventoryPanel.instance.inventory.draggedItem = tempItem;
-                    InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
+                Item tempItem = charPanel.items[index];
+                charPanel.items[index] = draggedItem;
+                //InventoryPanel.instance.inventory.draggedItem = tempItem;
+                InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
 
-                    // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
-                }
-
-                // slot empty
-                else
-                    charPanel.items[index] = draggedItem;
-
-                InventoryPanel.instance.inventory.HideDraggedItem();
-
-                return true;
+                // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
             }
-            break;
 
-        case 5:
-            if (draggedItem.equipType == EquipableItem.EquipType.Accessory)
+            // slot empty
+            else
+                charPanel.items[index] = draggedItem;
+
+            InventoryPanel.instance.inventory.HideDraggedItem();
+
+            return true;
+        }
+        break;
+
+    case 5:
+        if (draggedItem.equipType == EquipableItem.EquipType.Accessory)
+        {
+            // slot not empty
+            if (ContainsItem())
             {
-                // slot not empty
-                if (ContainsItem())
-                {
-                    Item tempItem = charPanel.items[index];
-                    charPanel.items[index] = draggedItem;
-                    //InventoryPanel.instance.inventory.draggedItem = tempItem;
-                    InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
+                Item tempItem = charPanel.items[index];
+                charPanel.items[index] = draggedItem;
+                //InventoryPanel.instance.inventory.draggedItem = tempItem;
+                InventoryPanel.instance.inventory.items[InventoryPanel.instance.inventory.draggedItemSlotNum] = tempItem;
 
-                    // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
-                }
-
-                // slot empty
-                else
-                    charPanel.items[index] = draggedItem;
-
-                InventoryPanel.instance.inventory.HideDraggedItem();
-
-                return true;
+                // InventoryPanel.instance.inventory.ShowDraggedItem(tempItem, -1);
             }
-            break;
-     */
+
+            // slot empty
+            else
+                charPanel.items[index] = draggedItem;
+
+            InventoryPanel.instance.inventory.HideDraggedItem();
+
+            return true;
+        }
+        break;
+ */
 
 

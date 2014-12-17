@@ -11,6 +11,10 @@ public class Inventory : MonoBehaviour
     public Item draggedItem { get; set; }
     public int draggedItemSlotNum { get; set; }
 
+    public bool hasSelectedItem { get; private set; }
+    public Item selectedItem { get; private set; }
+    public int selectedItemNum { get; private set; }
+
     List<InventorySlot> slots = new List<InventorySlot>();
 
     public InventoryPanel panel { get; private set; }
@@ -49,11 +53,14 @@ public class Inventory : MonoBehaviour
     void Update()
     {
         // drag item 
+
+        /*
         if (isDraggingItem)
         {
-            //Vector3 pos = (Input.mousePosition - panelRectrans.position);
-            //dragItemIconRectrans.po = new Vector2(pos.x - 25, pos.y - 25);
+            Vector3 pos = (Input.mousePosition - panelRectrans.position);
+            dragItemIconRectrans.localPosition = new Vector2(pos.x - 25, pos.y - 25);
         }
+         */
     }
 
     // add item by itemID
@@ -127,26 +134,21 @@ public class Inventory : MonoBehaviour
 
             }
         }
-
     }
 
-
-    public void ShowDraggedItem(Item item, int slotNum)
+    public void SelectItem(int slotNum)
     {
-        draggedItem = item;
-        panel.dragItemIcon.enabled = true;
-        isDraggingItem = true;
-        panel.dragItemIcon.sprite = item.itemIcon;
-        draggedItemSlotNum = slotNum;
-
-        HideItemDescription();
+        hasSelectedItem = true;
+        selectedItem = items[slotNum];
+        selectedItemNum = slotNum;
     }
 
-    public void HideDraggedItem()
+    public void UnselectItem()
     {
-        isDraggingItem = false;
-        panel.dragItemIcon.enabled = false;
-        draggedItem = null;
+        hasSelectedItem = false;
+
+        // cancel highlight
+        slots[selectedItemNum].HighlightSlot(false);
     }
 
     public void ShowItemDescription(Item item)

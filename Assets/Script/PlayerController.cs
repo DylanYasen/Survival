@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     // status tags
     public bool isWalking { get; private set; }
-    public bool isRunning { get; private set; }
+    //public bool isRunning { get; private set; }
     public bool isIdling { get; private set; }
 
     public bool isNearHeat { get; set; }
