@@ -161,4 +161,77 @@ public class Inventory : MonoBehaviour
         //panel.itemDesGUI.text = "";
     }
 
+    /////
+    /////
+    /////
+    // crafting
+    /////
+    /////
+    public void Craft()
+    {
+        Dictionary<int, List<RecipeItem>> recipes = CraftRecipeIO.instance.craftRecipes;
+
+        //List<RecipeItem> avaliableRecipes = new List<RecipeItem>();
+
+        int resultID = -1;
+
+        bool itemsMatched = true;
+
+        // look for recipes contain this first item in inventory
+        for (int j = 0; j <= ItemDatabase.instance.ItemAmout; j++)
+        {
+            if (!recipes.ContainsKey(j))
+                continue;
+
+            //if(items[i].itemID == recipes[])
+            if (items[0].itemID == recipes[j][0].ItemID)
+            {
+                resultID = j;
+
+                Debug.Log("get result id ");
+                Debug.Log(resultID);
+
+                break;
+                // add to a queue or sth
+                // dont break;
+            }
+        }
+
+        if (resultID == -1)
+            return;
+
+        // how many components
+        int recipeComponentCount = recipes[resultID].Count;
+
+        // check item matching
+        for (int i = 0; i < recipeComponentCount; i++)
+        {
+            if (items[i].itemID != recipes[resultID][i].ItemID)
+            {
+                itemsMatched = false;
+                break;
+            }
+        }
+
+        // all matched
+        if (itemsMatched)
+        {
+            // remove all items 
+            for (int i = 0; i < recipeComponentCount; i++)
+            {
+                items[i] = new Item();
+            }
+
+            // result
+            AddItemByID(resultID);
+        }
+
+
+
+
+
+
+    }
+
+
 }

@@ -4,6 +4,8 @@ TextureImporter:
   fileIDToRecycleName:
     21300000: Meat
     21300002: Logs
+    21300004: Branch
+    21300006: itemicon_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -60,6 +62,26 @@ TextureImporter:
         serializedVersion: 2
         x: 278
         y: 286
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Branch
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 286
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: itemicon_3
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 118
         width: 50
         height: 50
       alignment: 0

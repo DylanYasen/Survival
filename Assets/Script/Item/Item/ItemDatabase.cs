@@ -13,6 +13,8 @@ public class ItemDatabase : MonoBehaviour
 
     public List<Item> items { get; private set; }
 
+    public int ItemAmout;
+
     void Awake()
     {
         instance = this;
@@ -39,11 +41,12 @@ public class ItemDatabase : MonoBehaviour
         // items
         int itemIDCounter = -1;
 
+        // ID: 0
         ConsumableItem rawMeat = new ConsumableItem();
         rawMeat.itemName = "Meat";
         rawMeat.itemID = ++itemIDCounter;
-        //rawMeat.itemDes = "Raw Meat";
-        rawMeat.itemDes = "羊腿把子";
+        rawMeat.itemDes = "Raw Meat";
+        //rawMeat.itemDes = "羊腿把子";
 
         rawMeat.itemAmount = 1;
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
@@ -51,18 +54,47 @@ public class ItemDatabase : MonoBehaviour
         rawMeat.LoadIcon();
         items.Add(rawMeat);
 
-
+        // ID: 1
         ConsumableItem logs = new ConsumableItem();
         logs.itemName = "Logs";
         logs.itemID = ++itemIDCounter;
-        //logs.itemDes = "Logs";
-        logs.itemDes = "木材";
+        logs.itemDes = "Logs";
+        //logs.itemDes = "木材";
 
         logs.itemAmount = 1;
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
         logs.LoadIcon();
         items.Add(logs);
+
+        // ID: 2
+        ConsumableItem flint = new ConsumableItem();
+        flint.itemName = "Flint";
+        flint.itemID = ++itemIDCounter;
+        flint.itemDes = "Flint";
+        //logs.itemDes = "木材";
+
+        flint.itemAmount = 1;
+        //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
+        //refreshingWater.InitEffect();
+        flint.LoadIcon();
+        items.Add(flint);
+
+        // ID: 3
+        ConsumableItem Torch = new ConsumableItem();
+        Torch.itemName = "Torch";
+        Torch.itemID = ++itemIDCounter;
+        Torch.itemDes = "Torch";
+        //logs.itemDes = "木材";
+
+        Torch.itemAmount = 1;
+        //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
+        //refreshingWater.InitEffect();
+        Torch.LoadIcon();
+        items.Add(Torch);
+
+
+        ItemAmout = itemIDCounter;
 
         /*
         EquipableItem axe = new EquipableItem();
@@ -177,6 +209,20 @@ public class ItemDatabase : MonoBehaviour
         Debug.Log("item not found");
 
         return null;
+    }
+
+    public int GetItemIDFromName(string itemname)
+    {
+        for (int i = 0; i < ItemDatabase.instance.items.Count; i++)
+        {
+            // if find matched item 
+            if (ItemDatabase.instance.items[i].itemName == itemname)
+            {
+                return items[i].itemID;
+            }
+        }
+
+        return -1;
     }
 
 }

@@ -31,16 +31,13 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         defaultColor = slotBackgroundImage.color;
     }
 
-    void Start()
-    {
-        Debug.Log(inventory.items[slotNum].itemName);
-    }
-
     void Update()
     {
         if (inventory == null)
             return;
 
+        // chanage this 
+        // really bad
         if (ContainsItem())
         {
             // update item icon
@@ -127,7 +124,6 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
         // hide item amount
         itemAmountGUI.enabled = false;
-
 
         inventory.UnselectItem();
     }
