@@ -31,7 +31,10 @@ public class Pickup : StaticEntity
 
             HudTextManager.instance.CreateFloatText(floatTextSpawnPoint.position, hud, Color.black, 10, 40, 2);
 
-            Destroy(gameObject);
+
+            // add to item pool right now for testing
+            // it should be already in the pool
+            ItemPoolManager.instance.AddToPool(gameObject);
         }
 
     }

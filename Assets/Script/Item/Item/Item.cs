@@ -12,11 +12,24 @@ public class Item
     public Sprite itemSprite;
     public int itemAmount;
 
+    public bool isInteractive;
+    public bool isIgnitable;
 
     public Item()
     {
         itemName = null;
     }
+
+
+    public Item(string name)
+    {
+        itemName = name;
+
+        LoadIcon();
+        LoadWeaponSprite();
+    }
+
+
 
     public void LoadIcon()
     {

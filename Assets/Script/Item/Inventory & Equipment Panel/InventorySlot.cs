@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public enum SlotType
     {
@@ -17,9 +17,12 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
     public int slotNum { get; set; }
 
     Image itemIcon;
-    Image slotBackgroundImage;
     Text itemAmountGUI;
 
+    Image equippedMark;
+    public bool isEquipped;// { get; private set; }
+
+    Image slotBackgroundImage;
     private Color defaultColor;
 
     void Awake()
@@ -27,8 +30,15 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         itemIcon = gameObject.transform.GetChild(0).GetComponent<Image>();
         itemAmountGUI = itemIcon.transform.GetChild(0).GetComponent<Text>();
 
+        equippedMark = itemIcon.transform.GetChild(1).GetComponent<Image>();
+
         slotBackgroundImage = GetComponent<Image>();
         defaultColor = slotBackgroundImage.color;
+    }
+
+    void Start()
+    {
+        isEquipped = false;
     }
 
     void Update()
@@ -38,6 +48,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
         // chanage this 
         // really bad
+        // move to SwitchItemIcon
         if (ContainsItem())
         {
             // update item icon
@@ -55,6 +66,33 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
             itemIcon.enabled = false;
     }
 
+    public void SwitchItemIcon()
+    {
+        //
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // double click to use / equip
+        if (eventData.clickCount == 2)
+        {
+            if (inventory.items[slotNum] is EquipableItem)
+            {
+                if (!isEquipped)
+                {
+                    inventory.EquipItem(slotNum);
+                }
+                else
+                {
+                    inventory.UnEquipItem(slotNum);
+                }
+
+                isEquipped = !isEquipped;
+                equippedMark.enabled = isEquipped;
+            }
+        }
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (inventory == null)
@@ -64,6 +102,8 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         // select item
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+
+
 
             // ***************
             // change to just swap
@@ -83,6 +123,9 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
                 Debug.Log("selected");
             }
         }
+
+
+
 
         // right click
         // to use item
@@ -183,4 +226,6 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
         return false;
     }
+
+
 }

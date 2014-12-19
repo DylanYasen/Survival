@@ -11,13 +11,13 @@ public class HeatSource : StaticEntity
         base.OnTriggerEnter(other);
 
         if (collidedObjTag == "Player")
-            player.m_controller.isNearHeat = true;
+            player.m_interactController.isNearHeatSource = true;
     }
 
     protected override void OnTriggerExit(Collider other)
     {
         if (collidedObjTag == "Player")
-            player.m_controller.isNearHeat = false;
+            player.m_interactController.isNearHeatSource = false;
     }
 
     protected override void OnTriggerStay(Collider other)

@@ -81,10 +81,11 @@ public class ItemDatabase : MonoBehaviour
         items.Add(flint);
 
         // ID: 3
-        ConsumableItem Torch = new ConsumableItem();
+        EquipableItem Torch = new EquipableItem();
         Torch.itemName = "Torch";
         Torch.itemID = ++itemIDCounter;
         Torch.itemDes = "Torch";
+        Torch.equipType = EquipableItem.EquipType.Weapon_LeftHand;
         //logs.itemDes = "木材";
 
         Torch.itemAmount = 1;

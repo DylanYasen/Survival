@@ -97,7 +97,6 @@ public class Inventory : MonoBehaviour
                 break;
             }
         }
-
     }
 
     void addItemToEmptySlot(Item item)
@@ -225,12 +224,25 @@ public class Inventory : MonoBehaviour
             // result
             AddItemByID(resultID);
         }
+    }
 
+    // ******* Redesign ********
+    // maybe combine
+    public void EquipItem(int slotNum)
+    {
+        EquipableItem gear = (EquipableItem)items[slotNum];
 
+        GameObject model = ItemPoolManager.instance.GetItemModel(gear.itemID);
 
+        Player.instance.m_gearController.Equip(gear.equipType, model.transform);
 
+    }
 
+    public void UnEquipItem(int slotNum)
+    {
+        EquipableItem gear = (EquipableItem)items[slotNum];
 
+        Player.instance.m_gearController.UnEquip(gear.equipType);
     }
 
 

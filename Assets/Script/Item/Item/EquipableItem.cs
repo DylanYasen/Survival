@@ -11,8 +11,11 @@ public class EquipableItem : Item
         Body,
         Legs,
         Weapon,
+        Weapon_RightHand,
+        Weapon_LeftHand,
         Arms,
-        Accessory
+        Accessory,
+        Count
     }
 
     public EquipType equipType { get; set; }

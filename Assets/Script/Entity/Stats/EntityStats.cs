@@ -133,8 +133,8 @@ public class EntityStats
 
         if (cur_warmth != MaxWarmth)
         {
-            //HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "Warmth ++", Color.magenta);
-            HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "温暖 ++", Color.magenta);
+            HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "Warmth ++", Color.magenta);
+            //HudTextManager.instance.CreateFloatText(Player.instance.floatTextSpawnPoint.position, "温暖 ++", Color.magenta);
         }
 
     }
