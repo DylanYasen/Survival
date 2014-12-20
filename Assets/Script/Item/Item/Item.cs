@@ -2,6 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+interface Interactable
+{
+     void Interact();
+}
+
+interface Ignitable
+{
+     void Ignite();
+}
+
+interface Cookable
+{
+    public void Cook();
+}
+*/
+// interfaces are not really useful in this case
+
 
 public class Item
 {
@@ -12,14 +30,17 @@ public class Item
     public Sprite itemSprite;
     public int itemAmount;
 
-    public bool isInteractive;
-    public bool isIgnitable;
+    public int cookToItem_ID;
+    public int igniteToItem_ID;
+
+    public bool isInteractable { get; protected set; }
+    public bool isCookable { get; protected set; }
+    public bool isIgniteable { get; protected set; }
 
     public Item()
     {
         itemName = null;
     }
-
 
     public Item(string name)
     {
@@ -28,8 +49,6 @@ public class Item
         LoadIcon();
         LoadWeaponSprite();
     }
-
-
 
     public void LoadIcon()
     {
@@ -48,5 +67,10 @@ public class Item
 
     }
 
+
+    public virtual int Ignite()
+    {
+        return igniteToItem_ID;
+    }
 
 }

@@ -81,7 +81,8 @@ public class ItemDatabase : MonoBehaviour
         items.Add(flint);
 
         // ID: 3
-        EquipableItem Torch = new EquipableItem();
+        EquipableItem Torch = new EquipableItem(true);
+        Torch.igniteToItem_ID = 4;
         Torch.itemName = "Torch";
         Torch.itemID = ++itemIDCounter;
         Torch.itemDes = "Torch";
@@ -94,6 +95,17 @@ public class ItemDatabase : MonoBehaviour
         Torch.LoadIcon();
         items.Add(Torch);
 
+        // ID:4
+        EquipableItem Torch_Ignited = new EquipableItem();
+        Torch_Ignited.itemName = "Ignited Torch";
+        Torch_Ignited.itemID = ++itemIDCounter;
+        Torch_Ignited.itemDes = "Ignited Torch";
+        Torch_Ignited.equipType = EquipableItem.EquipType.Weapon_LeftHand;
+        Torch_Ignited.itemAmount = 1;
+        //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
+        //refreshingWater.InitEffect();
+        Torch_Ignited.LoadIcon();
+        items.Add(Torch_Ignited);
 
         ItemAmout = itemIDCounter;
 

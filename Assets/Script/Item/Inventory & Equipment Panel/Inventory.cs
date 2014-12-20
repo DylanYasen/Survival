@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
     public Item selectedItem { get; private set; }
     public int selectedItemNum { get; private set; }
 
-    List<InventorySlot> slots = new List<InventorySlot>();
+    public List<InventorySlot> slots = new List<InventorySlot>();
 
     public InventoryPanel panel { get; private set; }
     private RectTransform panelRectrans;
@@ -73,30 +73,7 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        // search through database
-        for (int i = 0; i < ItemDatabase.instance.items.Count; i++)
-        {
-            // if find matched item 
-            if (ItemDatabase.instance.items[i].itemID == id)
-            {
-                // get item data
-                Item item = ItemDatabase.instance.items[i];
-
-                Debug.Log(item.itemName);
-
-                // check for consumable
-                //if (item is ConsumableItem)
-                // stack if exists
-                // create new if not
-                //  CheckIfItemExist(id, item);
-
-                // not consumable, add it normally
-                //else
-                addItemToEmptySlot(item);
-
-                break;
-            }
-        }
+        addItemToEmptySlot(LookUpItem(id));
     }
 
     void addItemToEmptySlot(Item item)
@@ -110,8 +87,28 @@ public class Inventory : MonoBehaviour
                 break;
             }
         }
-
     }
+
+    Item LookUpItem(int id)
+    {
+        // search through database
+        for (int i = 0; i < ItemDatabase.instance.items.Count; i++)
+        {
+            // if find matched item 
+            if (ItemDatabase.instance.items[i].itemID == id)
+            {
+                // get item data
+                Item item = ItemDatabase.instance.items[i];
+
+                return item;
+            }
+
+        }
+
+        Debug.Log("not found in database");
+        return null;
+    }
+
 
     public void CheckIfItemExist(int id, Item item)
     {
@@ -132,6 +129,39 @@ public class Inventory : MonoBehaviour
                 addItemToEmptySlot(item);
 
             }
+        }
+    }
+
+    public void SwapItemAtSlotWithNewItem(int slotNum, int newItemID)
+    {
+        items[slotNum] = LookUpItem(newItemID);
+    }
+
+    public void SelectedItemInteract()
+    {
+        Debug.Log("pass");
+
+        Debug.Log(selectedItem.isIgniteable);
+        // only equipment can be ignit right now
+        // so need to
+
+        // 1. unequip old item
+        // 2. get the new item
+        // 3. equip the new item
+        // 4. cancel selection
+        if (selectedItem.isIgniteable)
+        {
+            int igniteToItemID = selectedItem.Ignite();
+            Debug.Log("new item ID " + igniteToItemID.ToString());
+
+            UnEquipItem(selectedItemNum);
+
+            // swap with new item
+            SwapItemAtSlotWithNewItem(selectedItemNum, igniteToItemID);
+
+            EquipItem(selectedItemNum);
+
+            UnselectItem();
         }
     }
 

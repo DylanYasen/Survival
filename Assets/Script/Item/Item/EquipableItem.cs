@@ -25,6 +25,11 @@ public class EquipableItem : Item
     delegate void EquipEffectDelegate();
     EquipEffectDelegate itemEffectDelegate;
 
+    public EquipableItem(bool igniteable = false)
+    {
+        this.isIgniteable = igniteable;
+    }
+
     public void InitEffect()
     {
         for (int i = 0; i < itemEffects.Count; i++)
@@ -49,4 +54,5 @@ public class EquipableItem : Item
 
         itemEffectDelegate();
     }
+
 }

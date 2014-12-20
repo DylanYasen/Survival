@@ -14,6 +14,7 @@ public struct PooledItem
 public class ItemPoolManager : MonoBehaviour
 {
     public GameObject torchPrefab;
+    public GameObject IgnitedTorchPrefab;
 
     public static ItemPoolManager instance;
 
@@ -36,16 +37,17 @@ public class ItemPoolManager : MonoBehaviour
         // when generate items get it from here
         // when items has been picked up / craft /.. return back here
 
-
-
         CreateItems();
     }
-
 
     private void CreateItems()
     {
         GameObject g = Instantiate(torchPrefab) as GameObject;
         g.name = torchPrefab.name;
+        AddToPool(g);
+
+        g = Instantiate(IgnitedTorchPrefab) as GameObject;
+        g.name = IgnitedTorchPrefab.name;
         AddToPool(g);
     }
 

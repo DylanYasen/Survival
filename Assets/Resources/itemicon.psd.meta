@@ -5,7 +5,8 @@ TextureImporter:
     21300000: Meat
     21300002: Logs
     21300004: Flint
-    21300006: Torch
+    21300006: Ignited Torch
+    21300008: Torch
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -77,11 +78,21 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Torch
+    - name: Ignited Torch
       rect:
         serializedVersion: 2
         x: 620
         y: 963
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Torch
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 877
         width: 50
         height: 50
       alignment: 0
