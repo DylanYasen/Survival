@@ -87,6 +87,8 @@ public class ItemDatabase : MonoBehaviour
         Torch.itemID = ++itemIDCounter;
         Torch.itemDes = "Torch";
         Torch.equipType = EquipableItem.EquipType.Weapon_LeftHand;
+
+        //Torch.workTimeNeeded = 200; this doesnt work  ** remember always set for upgraded item
         //logs.itemDes = "木材";
 
         Torch.itemAmount = 1;
@@ -102,13 +104,16 @@ public class ItemDatabase : MonoBehaviour
         Torch_Ignited.itemDes = "Ignited Torch";
         Torch_Ignited.equipType = EquipableItem.EquipType.Weapon_LeftHand;
         Torch_Ignited.itemAmount = 1;
+
+
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
         Torch_Ignited.LoadIcon();
         items.Add(Torch_Ignited);
 
-        ItemAmout = itemIDCounter;
+        Torch_Ignited.workTimeNeeded = 90;
 
+        ItemAmout = itemIDCounter;
         /*
         EquipableItem axe = new EquipableItem();
         axe.itemName = "Axe";

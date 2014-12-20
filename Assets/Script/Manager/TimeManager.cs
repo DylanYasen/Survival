@@ -8,6 +8,8 @@ public class TimeManager : MonoBehaviour
     public float dayCycleInMinutes = 1;
     public Text timeGUI;
 
+    public static float deltaTime;
+
     private const float SECOND = 1;
     private const float MINUTE_IN_SECOND = 60 * SECOND;
     private const float HOUR_IN_SECOND = 60 * MINUTE_IN_SECOND;
@@ -16,10 +18,10 @@ public class TimeManager : MonoBehaviour
     private const float DEGREE_PER_SECOND = 360 / DAY_IN_SECOND;
 
     // real time convert to game time
-    private float GAME_DAY_IN_SECOND;
-    private float GAME_SECOND_IN_SECOND;
-    private float GAME_MINUTE_IN_SECOND;
-    private float GAME_HOUR_IN_SECOND;
+    public static float GAME_DAY_IN_SECOND;
+    public static float GAME_SECOND_IN_SECOND;
+    public static float GAME_MINUTE_IN_SECOND;
+    public static float GAME_HOUR_IN_SECOND;
 
     private float _degreeRotation;
 
@@ -65,6 +67,9 @@ public class TimeManager : MonoBehaviour
         //  timer
         _realTimeSecPassed += dt;
         SetClock();
+
+        // convert real dt to game dt
+        deltaTime = dt / GAME_SECOND_IN_SECOND;
     }
 
     void SetClock()
@@ -98,6 +103,5 @@ public class TimeManager : MonoBehaviour
 
         timeGUI.text = clockHour.ToString() + ":" + clockMinute.ToString() + (isAm ? "am" : "pm");
     }
-
 
 }

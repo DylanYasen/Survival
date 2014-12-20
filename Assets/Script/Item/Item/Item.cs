@@ -37,6 +37,8 @@ public class Item
     public bool isCookable { get; protected set; }
     public bool isIgniteable { get; protected set; }
 
+    public float workTimeNeeded;
+
     public Item()
     {
         itemName = null;

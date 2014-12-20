@@ -15,6 +15,8 @@ public class Inventory : MonoBehaviour
     public Item selectedItem { get; private set; }
     public int selectedItemNum { get; private set; }
 
+    public Item interactingItem { get; private set; }
+
     public List<InventorySlot> slots = new List<InventorySlot>();
 
     public InventoryPanel panel { get; private set; }
@@ -145,24 +147,36 @@ public class Inventory : MonoBehaviour
         // only equipment can be ignit right now
         // so need to
 
-        // 1. unequip old item
+
         // 2. get the new item
-        // 3. equip the new item
-        // 4. cancel selection
+        // * start work timer
+        // 
         if (selectedItem.isIgniteable)
         {
             int igniteToItemID = selectedItem.Ignite();
             Debug.Log("new item ID " + igniteToItemID.ToString());
 
-            UnEquipItem(selectedItemNum);
-
-            // swap with new item
-            SwapItemAtSlotWithNewItem(selectedItemNum, igniteToItemID);
-
-            EquipItem(selectedItemNum);
-
-            UnselectItem();
+            interactingItem = LookUpItem(igniteToItemID);
+            Debug.Log("interacting item: " + igniteToItemID);
+            
+            Player.instance.m_interactController.Work(interactingItem.workTimeNeeded);
         }
+    }
+
+    // * work done
+    // 1. unequip old item
+    // 3. equip the new item
+    // 4. cancel selection
+    public void OnFinishInteraction()
+    {
+        UnEquipItem(selectedItemNum);
+
+        // swap with new item
+        items[selectedItemNum] = interactingItem;
+
+        EquipItem(selectedItemNum);
+
+        UnselectItem();
     }
 
     public void SelectItem(int slotNum)
