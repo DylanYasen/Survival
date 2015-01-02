@@ -31,9 +31,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
         }
 
-        gear.localPosition = Vector3.zero;
-        gear.localEulerAngles = Vector3.zero;
-        gear.localScale = gear.localScale;
+        ResetTrans(gear);
     }
 
     public void UnEquip(EquipableItem.EquipType type)
@@ -54,8 +52,17 @@ public class PlayerEquipmentController : MonoBehaviour
                 break;
         }
 
+        ResetTrans(gear);
 
         ItemPoolManager.instance.ReturnPool(gear.gameObject);
+    }
+
+
+    private void ResetTrans(Transform t)
+    {
+        t.localEulerAngles = Vector3.zero;
+        t.localPosition = Vector3.zero;
+        t.localScale = t.localScale;
     }
 
 }

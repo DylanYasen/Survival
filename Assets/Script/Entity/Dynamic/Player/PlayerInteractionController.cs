@@ -27,9 +27,12 @@ public class PlayerInteractionController : MonoBehaviour
 
     void Awake()
     {
+        ProgressBar = GameObject.FindWithTag("ProgressBar");
         progressScrollBar = ProgressBar.GetComponent<Scrollbar>();
         progressBarText = ProgressBar.transform.GetChild(1).GetComponent<Text>();
         progressBarRect = ProgressBar.GetComponent<RectTransform>();
+
+        button = GameObject.FindWithTag("TempButton");
 
         isWorking = false;
         workDone = false;

@@ -24,8 +24,19 @@ var heightDamping = 2.0;
 
 function LateUpdate () {
     // Early out if we don't have a target
-    if (!target)
-        return;
+    if (!target){
+        var obj : GameObject;
+
+        if(GameObject.FindWithTag("Player") != null)
+        {
+            obj = GameObject.FindWithTag("Player");
+
+            Debug.Log(obj);
+            target = obj.transform;
+        }
+        else
+            return;
+    }
 
     var wantedHeight = target.position.y + height;
 		

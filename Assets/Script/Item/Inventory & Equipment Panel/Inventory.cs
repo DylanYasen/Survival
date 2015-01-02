@@ -104,7 +104,6 @@ public class Inventory : MonoBehaviour
 
                 return item;
             }
-
         }
 
         Debug.Log("not found in database");
@@ -158,7 +157,7 @@ public class Inventory : MonoBehaviour
 
             interactingItem = LookUpItem(igniteToItemID);
             Debug.Log("interacting item: " + igniteToItemID);
-            
+
             Player.instance.m_interactController.Work(interactingItem.workTimeNeeded);
         }
     }
@@ -290,4 +289,9 @@ public class Inventory : MonoBehaviour
     }
 
 
+    // ********* Building Placement Trigger  ********* //
+    public void TriggerBuildingPlacement()
+    {
+        BuildingManager.instance.HoldModel(ItemPoolManager.instance.GetItemModel(selectedItem.itemID));
+    }
 }

@@ -7,11 +7,14 @@ public class ItemDatabase : MonoBehaviour
     public static ItemDatabase instance { get; private set; }
     public Dictionary<string, Sprite> iconSpriteSheet { get; private set; }
     public Dictionary<string, Sprite> weaponSpriteSheet { get; private set; }
+    public Dictionary<string, GameObject> itemObjectsDic { get; private set; }
 
     private Sprite[] icons;
+    private GameObject[] itemObjects;
     private Sprite[] weaponSprites;
 
-    public List<Item> items { get; private set; }
+    public List<Item> items;
+    //public List<Item> items { get; private set; }
 
     public int ItemAmout;
 
@@ -29,6 +32,13 @@ public class ItemDatabase : MonoBehaviour
         for (int i = 0; i < icons.Length; i++)
             iconSpriteSheet.Add(icons[i].name, icons[i]);
 
+        // init item objects
+        itemObjects = Resources.LoadAll<GameObject>("Prefab/Items");
+        itemObjectsDic = new Dictionary<string, GameObject>();
+
+        // store item icon in dictionary
+        for (int i = 0; i < itemObjects.Length; i++)
+            itemObjectsDic.Add(itemObjects[i].name, itemObjects[i]);
 
         // init weapon spritesheet
         // weaponSprites = Resources.LoadAll<Sprite>("itemSprite");
@@ -42,8 +52,7 @@ public class ItemDatabase : MonoBehaviour
         int itemIDCounter = -1;
 
         // ID: 0
-        ConsumableItem rawMeat = new ConsumableItem();
-        rawMeat.itemName = "Meat";
+        ConsumableItem rawMeat = new ConsumableItem("Meat");
         rawMeat.itemID = ++itemIDCounter;
         rawMeat.itemDes = "Raw Meat";
         //rawMeat.itemDes = "羊腿把子";
@@ -55,8 +64,8 @@ public class ItemDatabase : MonoBehaviour
         items.Add(rawMeat);
 
         // ID: 1
-        ConsumableItem logs = new ConsumableItem();
-        logs.itemName = "Logs";
+        ConsumableItem logs = new ConsumableItem("Logs");
+        //logs.itemName = "Logs";
         logs.itemID = ++itemIDCounter;
         logs.itemDes = "Logs";
         //logs.itemDes = "木材";
@@ -68,8 +77,8 @@ public class ItemDatabase : MonoBehaviour
         items.Add(logs);
 
         // ID: 2
-        ConsumableItem flint = new ConsumableItem();
-        flint.itemName = "Flint";
+        ConsumableItem flint = new ConsumableItem("Flint");
+        //flint.itemName = "Flint";
         flint.itemID = ++itemIDCounter;
         flint.itemDes = "Flint";
         //logs.itemDes = "木材";
@@ -81,9 +90,9 @@ public class ItemDatabase : MonoBehaviour
         items.Add(flint);
 
         // ID: 3
-        EquipableItem Torch = new EquipableItem(true);
+        EquipableItem Torch = new EquipableItem("Torch", true);
         Torch.igniteToItem_ID = 4;
-        Torch.itemName = "Torch";
+        //Torch.itemName = "Torch";
         Torch.itemID = ++itemIDCounter;
         Torch.itemDes = "Torch";
         Torch.equipType = EquipableItem.EquipType.Weapon_LeftHand;
@@ -98,13 +107,12 @@ public class ItemDatabase : MonoBehaviour
         items.Add(Torch);
 
         // ID:4
-        EquipableItem Torch_Ignited = new EquipableItem();
-        Torch_Ignited.itemName = "Ignited Torch";
+        EquipableItem Torch_Ignited = new EquipableItem("Ignited Torch");
+        //Torch_Ignited.itemName = "Ignited Torch";
         Torch_Ignited.itemID = ++itemIDCounter;
         Torch_Ignited.itemDes = "Ignited Torch";
         Torch_Ignited.equipType = EquipableItem.EquipType.Weapon_LeftHand;
         Torch_Ignited.itemAmount = 1;
-
 
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
@@ -211,7 +219,6 @@ public class ItemDatabase : MonoBehaviour
 
          */
     }
-
 
     public Item GetItemData(int id)
     {

@@ -7,7 +7,6 @@ interface Interactable
 {
      void Interact();
 }
-
 interface Ignitable
 {
      void Ignite();
@@ -20,7 +19,7 @@ interface Cookable
 */
 // interfaces are not really useful in this case
 
-
+[System.Serializable]
 public class Item
 {
     public string itemName;
@@ -28,6 +27,7 @@ public class Item
     public string itemDes;
     public Sprite itemIcon;
     public Sprite itemSprite;
+    public GameObject itemObject;
     public int itemAmount;
 
     public int cookToItem_ID;
@@ -49,7 +49,9 @@ public class Item
         itemName = name;
 
         LoadIcon();
-        LoadWeaponSprite();
+        LoadItemObject();
+
+        //LoadWeaponSprite();
     }
 
     public void LoadIcon()
@@ -60,6 +62,15 @@ public class Item
             Debug.Log(itemName + "icon not exist in spritesheet");
     }
 
+    public void LoadItemObject()
+    {
+        if (ItemDatabase.instance.itemObjectsDic.ContainsKey(itemName))
+            itemObject = ItemDatabase.instance.itemObjectsDic[itemName];
+        else
+            Debug.Log(itemName + "item object not exist in assets");
+    }
+
+    /*
     public void LoadWeaponSprite()
     {
         if (ItemDatabase.instance.weaponSpriteSheet.ContainsKey(itemName))
@@ -68,7 +79,7 @@ public class Item
             Debug.Log(itemName + " weaponsprite not exist in spritesheet");
 
     }
-
+    */
 
     public virtual int Ignite()
     {

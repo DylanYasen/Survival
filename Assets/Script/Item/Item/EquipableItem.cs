@@ -25,7 +25,9 @@ public class EquipableItem : Item
     delegate void EquipEffectDelegate();
     EquipEffectDelegate itemEffectDelegate;
 
-    public EquipableItem(bool igniteable = false)
+
+    public EquipableItem(string name, bool igniteable = false)
+        : base(name)
     {
         this.isIgniteable = igniteable;
     }

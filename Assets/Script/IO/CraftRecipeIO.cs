@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
@@ -134,8 +135,11 @@ public class CraftRecipeIO : MonoBehaviour
         m_recipeData += text + "\n";
     }
 
+
     void SaveMapData(JSONNode data)
     {
+#if UNITY_EDITOR
+
         /*
         if (File.Exists("Assets/Resources/IO/" + "CraftingRecipes.recipes"))
         {
@@ -146,6 +150,7 @@ public class CraftRecipeIO : MonoBehaviour
 
         // encode later
         var file = File.CreateText("Assets/Resources/IO/CraftingRecipes.recipes");
+
 
         //var file = File("Assets/Resources/IO/" + "CraftingRecipes.recipes",FileMode.Append);
 
@@ -159,5 +164,8 @@ public class CraftRecipeIO : MonoBehaviour
 
         //file.Write(data.SaveToBase64());
         file.Close();
+
+#endif
     }
 }
+

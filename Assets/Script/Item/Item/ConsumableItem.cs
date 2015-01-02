@@ -9,6 +9,11 @@ public class ConsumableItem : Item
     delegate void EquipEffectDelegate();
     EquipEffectDelegate itemEffectDelegate;
 
+    public ConsumableItem(string name)
+        : base(name)
+    {
+    }
+
     public void InitEffect()
     {
         for (int i = 0; i < itemEffects.Count; i++)

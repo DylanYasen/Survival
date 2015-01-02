@@ -18,8 +18,13 @@ public class PlayerController : MonoBehaviour
 
     // status tags
     public bool isWalking { get; private set; }
-    //public bool isRunning { get; private set; }
     public bool isIdling { get; private set; }
+    //public bool isRunning { get; private set; }
+
+    void Awake()
+    {
+        virtualController = GameObject.FindWithTag("JoyStick").GetComponent<CNJoystick>();
+    }
 
     void Start()
     {
@@ -28,6 +33,7 @@ public class PlayerController : MonoBehaviour
         m_controller = GetComponent<CharacterController>();
         //m_body = m_entity.m_body;
         m_trans = m_entity.transform;
+
     }
 
     void FixedUpdate()

@@ -1,15 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ToDolist : MonoBehaviour {
+public class ToDolist : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+
+    /*
+     * 
+     * 1. Move items only when not equippes
+     * 
+     * 2. Recipe seriliizer append data instead of replace
+     * 
+     * 3. 死亡之夜
+     * 
+     * 
+
+     * 
+     */
+
+
 }

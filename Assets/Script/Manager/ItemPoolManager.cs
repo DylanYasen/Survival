@@ -21,6 +21,8 @@ public class ItemPoolManager : MonoBehaviour
     // seperate pools might be better to loop through
     public List<GameObject> itemModelPool;
 
+    public List<GameObject> itemObjectPool;
+
     //public List<GameObject> EpuipableItemModelPool { get; private set; }
     //public List<GameObject> MaterialItemModelPool { get; private set; }
 
@@ -28,8 +30,9 @@ public class ItemPoolManager : MonoBehaviour
     {
         instance = this;
 
-
         itemModelPool = new List<GameObject>();
+
+        itemObjectPool = new List<GameObject>();
 
         // plan : 2
         // Instantiate all pick ups here
