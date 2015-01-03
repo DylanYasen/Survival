@@ -91,10 +91,10 @@ public class Network : Photon.MonoBehaviour
         Debug.Log("OnJoinedLobby(). Use a GUI to show existing rooms available in PhotonNetwork.GetRoomList().");
     }
 
-    public void JoinRoom(string roomName)
+    public void JoinRoom(string roomName, string playerName)
     {
+        PhotonNetwork.playerName = playerName;
         PhotonNetwork.JoinRoom(roomName);
-
 
         //for(int i = 0; i <PhotonNetwork.otherPlayers;i++)
 
@@ -106,13 +106,13 @@ public class Network : Photon.MonoBehaviour
         Debug.Log("OnJoinedRoom");
 
         GameManager.instance.LoadNextLevel();
-
-
     }
 
 
-    public void CreateRoom(string roomName)
+    public void CreateRoom(string roomName, string playerName)
     {
+        PhotonNetwork.playerName = playerName;
+
         PhotonNetwork.CreateRoom(roomName, new RoomOptions() { maxPlayers = 4 }, null);
 
         //PhotonNetwork.room
@@ -155,10 +155,11 @@ public class Network : Photon.MonoBehaviour
 
     private void CreatePlayer()
     {
-        Vector3[] pos = new Vector3[3] { new Vector3(200, 0, 200), new Vector3(250, 0, 250), new Vector3(225, 0, 225) };
+        //Vector3[] pos = new Vector3[3] { new Vector3(200, 0, 200), new Vector3(250, 0, 250), new Vector3(225, 0, 225) };
 
+        //GameObject player = PhotonNetwork.Instantiate("Prefab/Player/Player", pos[Random.Range(0, pos.Length)], Quaternion.identity, 0) as GameObject;
 
-        GameObject player = PhotonNetwork.Instantiate("Prefab/Player/Player", pos[Random.Range(0, pos.Length)], Quaternion.identity, 0) as GameObject;
+        GameObject player = PhotonNetwork.Instantiate("Prefab/Player/Player", new Vector3(250, 0, 250), Quaternion.identity, 0) as GameObject;
 
         player.name = "localplayer";
         player.tag = "Player";

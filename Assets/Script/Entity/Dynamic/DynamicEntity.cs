@@ -6,9 +6,13 @@ public abstract class DynamicEntity : Entity
     /* abstract out a generic controller class later */
     // public DynamicEntityController m_controller { get; private set; } 
 
+    public PhotonView m_photonView;
+
     protected override void Awake()
     {
         base.Awake();
+
+
         // m_controller = GetComponent<DynamicEntityController>();
     }
 

@@ -12,10 +12,13 @@ public enum Traits
     Prodigy
 }
 
+/*
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStatsController))]
 [RequireComponent(typeof(PlayerEquipmentController))]
 [RequireComponent(typeof(PlayerInteractionController))]
+[RequireComponent(typeof(PhotonView))]
+*/
 
 public class Player : DynamicEntity
 {
@@ -34,19 +37,23 @@ public class Player : DynamicEntity
 
     protected override void Awake()
     {
-        if (instance == null)
+        // maybe move to generic class
+        m_photonView = GetComponent<PhotonView>();
+
+        if (m_photonView.isMine)
+        {
             instance = this;
-        else
-            Destroy(gameObject);
 
-        gameObject.tag = "Player";
+            gameObject.tag = "Player";
 
-        base.Awake();
+            base.Awake();
 
-        m_controller = GetComponent<PlayerController>();
-        m_statController = GetComponent<PlayerStatsController>();
-        m_gearController = GetComponent<PlayerEquipmentController>();
-        m_interactController = GetComponent<PlayerInteractionController>();
+            m_statController = gameObject.AddComponent<PlayerStatsController>();
+            m_gearController = gameObject.AddComponent<PlayerEquipmentController>();
+            m_interactController = gameObject.AddComponent<PlayerInteractionController>();
+        }
+
+        m_controller = gameObject.AddComponent<PlayerController>();
 
     }
 }

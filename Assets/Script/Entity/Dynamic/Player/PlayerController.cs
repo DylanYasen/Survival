@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public AnimationClip runClip;
     public AnimationClip idleClip;
 
-    private DynamicEntity m_entity;
+    private Player m_entity;
     private CharacterController m_controller;
     private EntityStats m_stats;
     private Transform m_trans;
@@ -21,26 +21,53 @@ public class PlayerController : MonoBehaviour
     public bool isIdling { get; private set; }
     //public bool isRunning { get; private set; }
 
+    public Animator anim;
+
     void Awake()
     {
-        virtualController = GameObject.FindWithTag("JoyStick").GetComponent<CNJoystick>();
+
+#if UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8
+
+        if (m_photonView.isMine)
+            virtualController = GameObject.FindWithTag("JoyStick").GetComponent<CNJoystick>();
+#endif
+
     }
 
     void Start()
     {
-        m_entity = GetComponent<DynamicEntity>();
-        m_stats = m_entity.m_stats;
-        m_controller = GetComponent<CharacterController>();
-        //m_body = m_entity.m_body;
+        m_entity = GetComponent<Player>();
         m_trans = m_entity.transform;
+        m_controller = GetComponent<CharacterController>();
 
+        if (m_entity.m_photonView.isMine)
+        {
+            m_stats = m_entity.m_stats;
+        }
+
+        //m_body = m_entity.m_body;
+        walkClip = animation.GetClip("walk");
+        runClip = animation.GetClip("run");
+        idleClip = animation.GetClip("idle");
     }
 
-    void FixedUpdate()
+    void Update()
     {
+        if (!m_entity.m_photonView.isMine)
+            return;
+
+#if UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8
+
         moveDir.Set(virtualController.GetAxis("Horizontal"), m_controller.velocity.y, virtualController.GetAxis("Vertical"));
 
-        //Debug.Log(moveDir);
+#elif UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+
+        moveDir.Set(Input.GetAxis("Horizontal"), m_controller.velocity.y, Input.GetAxis("Vertical"));
+#endif
+
+#if UNITY_EDITOR
+        Debug.Log(moveDir);
+#endif
 
         Move();
     }
@@ -49,9 +76,6 @@ public class PlayerController : MonoBehaviour
     {
         if (moveDir != Vector3.zero)
         {
-            //isRunning = true;
-            isIdling = false;
-
             // look at position
             Quaternion rotation = Quaternion.LookRotation(moveDir, Vector3.forward);
             rotation.x = 0; // lock x axis
@@ -60,19 +84,45 @@ public class PlayerController : MonoBehaviour
 
             m_controller.SimpleMove(moveDir * m_stats.MoveSpeed);
 
-            animation.CrossFade(runClip.name);
+            // send others anim update
+            if (isIdling)
+            {
+                if (!PhotonNetwork.offlineMode)
+                    m_entity.m_photonView.RPC("UpdateAnim", PhotonTargets.All, runClip.name);
+                else
+                    UpdateAnim(runClip.name);
+            }
+
+            //isRunning = true;
+            isIdling = false;
         }
 
         else
         {
+            if (!isIdling)
+            {
+                // send others anim update
+                if (!PhotonNetwork.offlineMode)
+                    m_entity.m_photonView.RPC("UpdateAnim", PhotonTargets.All, idleClip.name);
+                else
+                    UpdateAnim(idleClip.name);
+            }
+
             //isRunning = false;
             isIdling = true;
-            animation.CrossFade(idleClip.name);
         }
 
         // m_controller.SimpleMove(Vector3.forward * moveDir * m_stats.MoveSpeed);
         //Debug.Log("move " + m_stats.MoveSpeed);
     }
+
+
+    [RPC]
+    void UpdateAnim(string clipName)
+    {
+        animation.CrossFade(clipName);
+    }
+
 }
 
 

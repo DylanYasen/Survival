@@ -48,11 +48,6 @@ public class GameManager : Photon.MonoBehaviour
     // 
     // 
 
-    void Update()
-    {
-
-    }
-
     void OnLevelWasLoaded(int level)
     {
         // Lobby Scene
@@ -84,8 +79,17 @@ public class GameManager : Photon.MonoBehaviour
                 network.InitGame();
             }
 
+            // **************
+            // **************
+            // move to a method or something
+
             // Create local camera
             Instantiate(Resources.Load("Prefab/Camera/Cam", typeof(GameObject)));
+
+            // Create Joystick
+#if UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8
+            Instantiate(Resources.Load("Prefab/Utils/Joystick", typeof(GameObject)));
+#endif
 
         }
     }
@@ -95,6 +99,10 @@ public class GameManager : Photon.MonoBehaviour
     {
         int nextLevel = Application.loadedLevel;
         nextLevel++;
-        Application.LoadLevel(nextLevel);
+
+        if (PhotonNetwork.offlineMode)
+            Application.LoadLevel(nextLevel);
+        else
+            PhotonNetwork.LoadLevel(nextLevel);
     }
 }

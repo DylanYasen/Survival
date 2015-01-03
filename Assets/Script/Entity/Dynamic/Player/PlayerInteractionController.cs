@@ -45,6 +45,7 @@ public class PlayerInteractionController : MonoBehaviour
         ToggleWorkBar();
     }
 
+
     void Update()
     {
         NearFire();

@@ -9,6 +9,8 @@ public class LobbyRoomList : MonoBehaviour
 
     public RoomInfo[] roomInfo;
 
+    public LobbyGuiController guiController;
+
     void Awake()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -39,7 +41,7 @@ public class LobbyRoomList : MonoBehaviour
 
     public void ClickRoom(int index)
     {
-        GameManager.instance.network.JoinRoom(roomName[index].text);
+        guiController.JoinRoom(roomName[index].text);
     }
 
 }

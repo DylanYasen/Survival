@@ -13,11 +13,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HostType: 1
   Protocol: 0
-  ServerAddress: 
+  ServerAddress: 184.173.132.27
   ServerPort: 7777
   PreferredRegion: 1
   AppID: e66e35b7-d4f6-4816-95a5-725d2d2aff6a
-  PingCloudServersOnAwake: 1
+  PingCloudServersOnAwake: 0
   RpcList:
   - Chat
   - ColorRpc
@@ -33,4 +33,5 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupTimes
   - TaggedPlayer
+  - UpdateAnim
   DisableAutoOpenWizard: 0
