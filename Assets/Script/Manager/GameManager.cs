@@ -32,7 +32,6 @@ public class GameManager : Photon.MonoBehaviour
         network = GetComponent<Network>();
     }
 
-
     //
     //
     // Menu Accessor
@@ -77,6 +76,7 @@ public class GameManager : Photon.MonoBehaviour
                 Debug.Log("online");
 
                 network.InitGame();
+                network.InitGameData();
             }
 
             // **************
@@ -90,10 +90,8 @@ public class GameManager : Photon.MonoBehaviour
 #if UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8
             Instantiate(Resources.Load("Prefab/Utils/Joystick", typeof(GameObject)));
 #endif
-
         }
     }
-
 
     public void LoadNextLevel()
     {

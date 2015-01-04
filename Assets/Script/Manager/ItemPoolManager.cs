@@ -40,7 +40,7 @@ public class ItemPoolManager : MonoBehaviour
         // when generate items get it from here
         // when items has been picked up / craft /.. return back here
 
-        CreateItems();
+        //CreateItems();
     }
 
     private void CreateItems()
@@ -57,7 +57,6 @@ public class ItemPoolManager : MonoBehaviour
     public void AddToPool(GameObject g)
     {
         itemModelPool.Add(g);
-        g.SetActive(false);
     }
 
     public void ReturnPool(GameObject gear)

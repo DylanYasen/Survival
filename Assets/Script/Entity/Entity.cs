@@ -10,6 +10,8 @@ public abstract class Entity : MonoBehaviour
 
     public Animator m_anim { get; private set; }
 
+    public PhotonView m_photonView { get; private set; }
+
     public GameObject collidedObj { get; protected set; }
     public Entity collidedEntity { get; protected set; }
     public string collidedObjTag { get; protected set; }
@@ -20,7 +22,13 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         m_stats.Init(this);
+
         m_anim = GetComponent<Animator>();
+
+        // if (!PhotonNetwork.offlineMode)
+        //   m_photonView = gameObject.AddComponent<PhotonView>();
+
+        m_photonView = gameObject.GetComponent<PhotonView>();
 
         floatTextSpawnPoint = gameObject.transform.FindChild("floatTextPoint");
 

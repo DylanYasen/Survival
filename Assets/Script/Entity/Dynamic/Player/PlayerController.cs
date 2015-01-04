@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         idleClip = animation.GetClip("idle");
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!m_entity.m_photonView.isMine)
             return;
@@ -62,14 +62,17 @@ public class PlayerController : MonoBehaviour
 
 #elif UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
 
-        moveDir.Set(Input.GetAxis("Horizontal"), m_controller.velocity.y, Input.GetAxis("Vertical"));
+        moveDir.Set(Input.GetAxisRaw("Horizontal"), m_controller.velocity.y, Input.GetAxisRaw("Vertical"));
 #endif
 
 #if UNITY_EDITOR
         Debug.Log(moveDir);
 #endif
+        // moveDir.Normalize();
 
         Move();
+
+        //Debug.Log(isIdling);
     }
 
     void Move()
@@ -77,10 +80,10 @@ public class PlayerController : MonoBehaviour
         if (moveDir != Vector3.zero)
         {
             // look at position
-            Quaternion rotation = Quaternion.LookRotation(moveDir, Vector3.forward);
+            Quaternion rotation = Quaternion.LookRotation(moveDir, Vector3.up);
             rotation.x = 0; // lock x axis
             rotation.z = 0; // lock z axis
-            m_trans.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10);
+            m_trans.rotation = Quaternion.Lerp(m_trans.rotation, rotation, Time.deltaTime * 10);
 
             m_controller.SimpleMove(moveDir * m_stats.MoveSpeed);
 

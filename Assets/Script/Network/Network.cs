@@ -108,6 +108,34 @@ public class Network : Photon.MonoBehaviour
         GameManager.instance.LoadNextLevel();
     }
 
+    public void InitGameData()
+    {
+        if (PhotonNetwork.isMasterClient)
+            SetUpMasterGameData();
+        else
+            FetchGameDataFromMaster();
+    }
+
+    void SetUpMasterGameData()
+    {
+        Debug.Log("setup master data");
+        MasterClient.instance.StartGame();
+    }
+
+    void FetchGameDataFromMaster()
+    {
+        Debug.Log("fetch data");
+        // started time
+        double startedTime = (double)PhotonNetwork.room.customProperties["st"];
+        double passedSinceStart = PhotonNetwork.time - startedTime;
+
+        Debug.Log(startedTime);
+        Debug.Log(passedSinceStart);
+
+        GameObject.FindWithTag("TimeManager").GetComponent<TimeManager>().SetStartTime(passedSinceStart);
+
+    }
+
 
     public void CreateRoom(string roomName, string playerName)
     {
@@ -131,6 +159,14 @@ public class Network : Photon.MonoBehaviour
 
     }
 
+    void OnPhotonPlayerConnected(PhotonPlayer player)
+    {
+
+
+    }
+
+
+
     /// <summary>
     /// game start
     /// </summary>
@@ -139,18 +175,42 @@ public class Network : Photon.MonoBehaviour
     {
         CreatePlayer();
 
-        InitLevel();
+        if (PhotonNetwork.isMasterClient)
+        {
+            InitLevel();
 
+            Init();
+
+            CreateItems();
+        }
     }
+
+
+    private void Init()
+    {
+        // sun
+        GameObject sun = PhotonNetwork.Instantiate("Prefab/Environment/Sun", new Vector3(250, 300, 250), Quaternion.identity, 0);
+    }
+
+    private void CreateItems()
+    {
+        // should be in a loader class
+
+        string prefix = "Prefab/Items/";
+        string[] itemNames = new string[] { "Flint", "Ignited Torch", "Logs" };
+
+        Vector3[] pos = new Vector3[3] { new Vector3(200, 0, 200), new Vector3(215, 0, 215), new Vector3(240, 0, 240) };
+
+        foreach (string name in itemNames)
+            PhotonNetwork.Instantiate(prefix + name, pos[Random.Range(0, pos.Length)], Quaternion.identity, 0);
+    }
+
 
     private void InitLevel()
     {
-        if (PhotonNetwork.isMasterClient)
-        {
-            // format level name
-            PhotonNetwork.Instantiate("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
-            //PhotonNetwork.InstantiateSceneObject("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
-        }
+        // format level name
+        PhotonNetwork.Instantiate("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
+        //PhotonNetwork.InstantiateSceneObject("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
     }
 
     private void CreatePlayer()
@@ -167,4 +227,9 @@ public class Network : Photon.MonoBehaviour
         Debug.Log("create player");
     }
 
+    [RPC]
+    public void SetClientGameTime()
+    {
+
+    }
 }

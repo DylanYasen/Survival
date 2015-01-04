@@ -28,23 +28,36 @@ public class TimeManager : MonoBehaviour
     private float _timeOfDay;
     private float _realTimeSecPassed;
 
-    private int clockHour;
-    private int clockMinute;
-    private int passedDay;
+    public int clockHour;
+    public int clockMinute;
+    public int passedDay;
 
     private bool isAm;
 
-    void Start()
+    void Awake()
     {
-        // clock setting 
-        clockHour = 6;
-        isAm = true;
-        clockMinute = 0;
-        passedDay = 0;
-        SetClock();
+        m_sun = GameObject.FindWithTag("Sun").transform;
+        timeGUI = GameObject.FindWithTag("TimeGUI").GetComponent<Text>();
 
+        //timeGUI = 
+
+        // clock setting 
+
+        //if (PhotonNetwork.offlineMode || PhotonNetwork.isMasterClient)
+        //{
+        clockHour = 6;
+        clockMinute = 0;
+        //}
+
+        passedDay = 0;
         _realTimeSecPassed = 0;
         _timeOfDay = 0;
+
+        isAm = true;
+
+        Debug.Log("set clock");
+        Debug.Log(clockHour + " ; " + clockMinute);
+
 
         //GAME_HOUR_PER_HOUR = dayCycleInMinutes * MINUTE_IN_SECOND / HOUR_IN_SECOND /;
 
@@ -55,6 +68,8 @@ public class TimeManager : MonoBehaviour
 
         // degree to rotate per 
         _degreeRotation = DEGREE_PER_SECOND * DAY_IN_SECOND / GAME_DAY_IN_SECOND;
+
+        SetClock();
     }
 
     void FixedUpdate()
@@ -70,38 +85,75 @@ public class TimeManager : MonoBehaviour
 
         // convert real dt to game dt
         deltaTime = dt / GAME_SECOND_IN_SECOND;
+
     }
 
     void SetClock()
     {
+        //Debug.Log("real time second pass:" + _realTimeSecPassed);
+
         // passed a minute
         if (_realTimeSecPassed >= GAME_MINUTE_IN_SECOND)
         {
-            _realTimeSecPassed -= GAME_MINUTE_IN_SECOND;
-            clockMinute++;
+            int num = (int)(_realTimeSecPassed / GAME_MINUTE_IN_SECOND);
+
+            //Debug.Log("game passed secnond " + num);
+
+            _realTimeSecPassed -= num * GAME_MINUTE_IN_SECOND;
+            clockMinute += num;
         }
 
         // passed an hour
-        if (clockMinute == 60)
+        if (clockMinute >= 60)
         {
-            clockMinute = 0;
-            clockHour++;
+            int num = (int)(clockMinute / 60);
+
+            clockMinute = clockMinute % 60;
+
+            clockHour += num;
         }
 
         // passed a day
-        if (clockHour == 12)
+        if (clockHour >= 12)
         {
-            // if pm then a day passed
-            if (!isAm)
-                passedDay++;
+            int num = (int)(clockHour / 12);
 
-            // switch am/pm
-            isAm = !isAm;
+            int counter = 0;
+            while (counter < num)
+            {
+                // if pm then a day passed
+                if (!isAm)
+                    passedDay++;
 
-            clockHour = 0;
+                // switch am/pm
+                isAm = !isAm;
+
+                counter++;
+            }
+
+            clockHour = clockHour % 12;
         }
 
+        // gui
+        if (timeGUI)
+            UpdateTimeGUI();
+    }
+
+    void UpdateTimeGUI()
+    {
         timeGUI.text = clockHour.ToString() + ":" + clockMinute.ToString() + (isAm ? "am" : "pm");
+    }
+
+    public void SetStartTime(double secondPassedSinceStarted = 0)
+    {
+
+        Debug.Log("*********" + secondPassedSinceStarted);
+        //float timePassedInGameTime = (float)secondPassedSinceStarted / GAME_SECOND_IN_SECOND;
+
+        _realTimeSecPassed = (float)secondPassedSinceStarted;
+
+
+
     }
 
 }
