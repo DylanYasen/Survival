@@ -27,6 +27,11 @@ public class PlayerInteractionController : MonoBehaviour
 
     void Awake()
     {
+      
+    }
+
+    void Start()
+    {
         ProgressBar = GameObject.FindWithTag("ProgressBar");
         progressScrollBar = ProgressBar.GetComponent<Scrollbar>();
         progressBarText = ProgressBar.transform.GetChild(1).GetComponent<Text>();
@@ -36,10 +41,7 @@ public class PlayerInteractionController : MonoBehaviour
 
         isWorking = false;
         workDone = false;
-    }
 
-    void Start()
-    {
         inventory = InventoryPanel.instance.inventory;
 
         ToggleWorkBar();

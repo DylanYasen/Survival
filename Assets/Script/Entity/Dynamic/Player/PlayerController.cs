@@ -66,9 +66,9 @@ public class PlayerController : MonoBehaviour
 #endif
 
 #if UNITY_EDITOR
-        Debug.Log(moveDir);
+        //Debug.Log(moveDir);
 #endif
-        // moveDir.Normalize();
+        moveDir.Normalize();
 
         Move();
 
@@ -77,13 +77,10 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+
         if (moveDir != Vector3.zero)
         {
-            // look at position
-            Quaternion rotation = Quaternion.LookRotation(moveDir, Vector3.up);
-            rotation.x = 0; // lock x axis
-            rotation.z = 0; // lock z axis
-            m_trans.rotation = Quaternion.Lerp(m_trans.rotation, rotation, Time.deltaTime * 10);
+            RotateToward(moveDir);
 
             m_controller.SimpleMove(moveDir * m_stats.MoveSpeed);
 
@@ -119,6 +116,14 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("move " + m_stats.MoveSpeed);
     }
 
+    void RotateToward(Vector3 dir)
+    {
+        // look at position
+        Quaternion rotation = Quaternion.LookRotation(dir, Vector3.up);
+        rotation.x = 0; // lock x axis
+        rotation.z = 0; // lock z axis
+        m_trans.rotation = Quaternion.Lerp(m_trans.rotation, rotation, Time.deltaTime * 10);
+    }
 
     [RPC]
     void UpdateAnim(string clipName)
@@ -127,5 +132,4 @@ public class PlayerController : MonoBehaviour
     }
 
 }
-
 

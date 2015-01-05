@@ -78,13 +78,8 @@ public class ItemPoolManager : MonoBehaviour
             }
         }
 
-
         Debug.Log("item model not found in pool");
         return null;
     }
-
-
-
-
 
 }

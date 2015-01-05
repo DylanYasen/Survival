@@ -11,6 +11,29 @@ public class Network : Photon.MonoBehaviour
 
     public LobbyRoomList roomList;
 
+
+    public virtual void Start()
+    {
+        PhotonNetwork.autoJoinLobby = true;
+        PhotonNetwork.PhotonServerSettings.PingCloudServersOnAwake = false;
+    }
+
+    public virtual void Update()
+    {
+        // get room list
+        // in lobby 
+        if (GameManager.instance.gameState == GameManager.GameState.Lobby)
+        {
+            if (roomList == null)
+                roomList = GameObject.FindWithTag("RoomList").GetComponent<LobbyRoomList>();
+
+            if (PhotonNetwork.GetRoomList().Length != 0)
+                roomList.ShowRoom(PhotonNetwork.GetRoomList());
+            else
+                roomList.NoRoom();
+        }
+    }
+
     public void Connect()
     {
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
@@ -32,8 +55,6 @@ public class Network : Photon.MonoBehaviour
             PhotonNetwork.ConnectUsingSettings(Version + "." + Application.loadedLevel);
         }
 
-
-
         // generate a name for this player, if none is assigned yet
         /*if (String.IsNullOrEmpty(PhotonNetwork.playerName))
         {
@@ -44,40 +65,14 @@ public class Network : Photon.MonoBehaviour
         // PhotonNetwork.logLevel = NetworkLogLevel.Full;
     }
 
-
-    public virtual void Start()
-    {
-        PhotonNetwork.autoJoinLobby = false;
-        PhotonNetwork.PhotonServerSettings.PingCloudServersOnAwake = false;
-    }
-
-    public virtual void Update()
-    {
-        // if in lobby state
-        if (GameManager.instance.gameState == GameManager.GameState.Lobby)
-        {
-            if (roomList == null)
-                roomList = GameObject.FindWithTag("RoomList").GetComponent<LobbyRoomList>();
-
-
-            if (PhotonNetwork.GetRoomList().Length != 0)
-                roomList.ShowRoom(PhotonNetwork.GetRoomList());
-            else
-                roomList.NoRoom();
-
-        }
-    }
     // to react to events "connected" and (expected) error "failed to join random room", we implement some methods. PhotonNetworkingMessage lists all available methods!
-
     public virtual void OnConnectedToMaster()
     {
         if (PhotonNetwork.networkingPeer.AvailableRegions != null) Debug.LogWarning("List of available regions counts " + PhotonNetwork.networkingPeer.AvailableRegions.Count + ". First: " + PhotonNetwork.networkingPeer.AvailableRegions[0] + " \t Current Region: " + PhotonNetwork.networkingPeer.CloudRegion);
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
 
-        Debug.Log(PhotonNetwork.GetPing());
-
-        PhotonNetwork.JoinLobby();
-
+        //Debug.Log(PhotonNetwork.GetPing());
+        //PhotonNetwork.JoinLobby();
         //PhotonNetwork.JoinRandomRoom();
     }
 
@@ -97,15 +92,14 @@ public class Network : Photon.MonoBehaviour
         PhotonNetwork.JoinRoom(roomName);
 
         //for(int i = 0; i <PhotonNetwork.otherPlayers;i++)
-
-
         //PhotonNetwork.room
     }
+
     public void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom");
-
         GameManager.instance.LoadNextLevel();
+
     }
 
     public void InitGameData()
@@ -133,9 +127,7 @@ public class Network : Photon.MonoBehaviour
         Debug.Log(passedSinceStart);
 
         GameObject.FindWithTag("TimeManager").GetComponent<TimeManager>().SetStartTime(passedSinceStart);
-
     }
-
 
     public void CreateRoom(string roomName, string playerName)
     {
@@ -162,15 +154,11 @@ public class Network : Photon.MonoBehaviour
     void OnPhotonPlayerConnected(PhotonPlayer player)
     {
 
-
     }
-
-
 
     /// <summary>
     /// game start
     /// </summary>
-
     public void InitGame()
     {
         CreatePlayer();
@@ -179,17 +167,18 @@ public class Network : Photon.MonoBehaviour
         {
             InitLevel();
 
-            Init();
-
             CreateItems();
         }
     }
 
-
-    private void Init()
+    private void InitLevel()
     {
-        // sun
-        GameObject sun = PhotonNetwork.Instantiate("Prefab/Environment/Sun", new Vector3(250, 300, 250), Quaternion.identity, 0);
+        // TODO : format level name
+        PhotonNetwork.Instantiate("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
+        //PhotonNetwork.InstantiateSceneObject("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
+
+        // create sun
+        //GameObject sun = PhotonNetwork.Instantiate("Prefab/Environment/Sun", new Vector3(250, 300, 250), Quaternion.identity, 0);
     }
 
     private void CreateItems()
@@ -197,20 +186,29 @@ public class Network : Photon.MonoBehaviour
         // should be in a loader class
 
         string prefix = "Prefab/Items/";
-        string[] itemNames = new string[] { "Flint", "Ignited Torch", "Logs" };
+        //string[] itemNames = new string[] { "Flint", "Ignited Torch", "Logs", "Meat" };
+        string[] itemNames = new string[] { "Flint",  "Logs", "Meat" };
 
-        Vector3[] pos = new Vector3[3] { new Vector3(200, 0, 200), new Vector3(215, 0, 215), new Vector3(240, 0, 240) };
+
+        //Vector3[] pos = new Vector3[3] { new Vector3(200, 0, 200), new Vector3(215, 0, 215), new Vector3(240, 0, 240) };
+
+        Vector2 randPos;
+        Vector3 itemPos = new Vector3();
+        itemPos.y = 0;
 
         foreach (string name in itemNames)
-            PhotonNetwork.Instantiate(prefix + name, pos[Random.Range(0, pos.Length)], Quaternion.identity, 0);
-    }
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                // change 100 to something
+                randPos = Random.insideUnitCircle * 50;
 
+                itemPos.x = randPos.x + 250;
+                itemPos.z = randPos.y + 250;
 
-    private void InitLevel()
-    {
-        // format level name
-        PhotonNetwork.Instantiate("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
-        //PhotonNetwork.InstantiateSceneObject("Prefab/Level/Level_0_Terrain", Vector3.zero, Quaternion.identity, 0);
+                PhotonNetwork.Instantiate(prefix + name, itemPos, Quaternion.identity, 0);
+            }
+        }
     }
 
     private void CreatePlayer()
@@ -227,9 +225,4 @@ public class Network : Photon.MonoBehaviour
         Debug.Log("create player");
     }
 
-    [RPC]
-    public void SetClientGameTime()
-    {
-
-    }
 }

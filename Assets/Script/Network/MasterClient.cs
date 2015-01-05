@@ -41,8 +41,9 @@ public class MasterClient : MonoBehaviour
         startTimeData[StartTimeKey] = PhotonNetwork.time;
         PhotonNetwork.room.SetCustomProperties(startTimeData);
 
-        Debug.Log(PhotonNetwork.room.customProperties);
+        GameObject.FindWithTag("TimeManager").GetComponent<TimeManager>().SetStartTime();
 
+        Debug.Log(PhotonNetwork.room.customProperties);
     }
 
 
@@ -52,4 +53,10 @@ public class MasterClient : MonoBehaviour
             SetStartGameTimer();
 
     }
+
+
+
+
+
+
 }

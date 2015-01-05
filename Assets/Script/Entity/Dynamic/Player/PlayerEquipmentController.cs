@@ -7,9 +7,11 @@ public class PlayerEquipmentController : MonoBehaviour
     public Transform RightHand;
     public Transform LeftHand;
 
+    public PhotonView m_pv;
+
     void Start()
     {
-
+        m_pv = GetComponent<Player>().m_photonView;
     }
 
     void Update()
@@ -17,35 +19,40 @@ public class PlayerEquipmentController : MonoBehaviour
 
     }
 
-    public void Equip(EquipableItem.EquipType type, Transform gear)
+    [RPC]
+    public void Equip(int type, string itemName)
     {
+
+        GameObject gear = PhotonNetwork.Instantiate("Prefab/Items/" + itemName, Vector3.zero, Quaternion.identity, 0);
+        gear.GetComponent<Pickup>().enabled = false;
+
         switch (type)
         {
-            case EquipableItem.EquipType.Weapon_RightHand:
-                gear.parent = RightHand;
+            case (int)EquipableItem.EquipType.Weapon_RightHand:
+                gear.transform.parent = RightHand;
                 break;
 
-            case EquipableItem.EquipType.Weapon_LeftHand:
-                gear.parent = LeftHand;
+            case (int)EquipableItem.EquipType.Weapon_LeftHand:
+                gear.transform.parent = LeftHand;
                 break;
-
         }
 
-        ResetTrans(gear);
+        ResetTrans(gear.transform);
     }
 
-    public void UnEquip(EquipableItem.EquipType type)
+    [RPC]
+    public void UnEquip(int type)
     {
         Transform gear = transform; // just for init
 
         switch (type)
         {
-            case EquipableItem.EquipType.Weapon_RightHand:
+            case (int)EquipableItem.EquipType.Weapon_RightHand:
                 gear = RightHand.GetChild(0);
                 gear.parent = ItemDatabase.instance.transform;
                 break;
 
-            case EquipableItem.EquipType.Weapon_LeftHand:
+            case (int)EquipableItem.EquipType.Weapon_LeftHand:
                 gear = LeftHand.GetChild(0);
                 gear.parent = ItemDatabase.instance.transform;
 
@@ -54,7 +61,7 @@ public class PlayerEquipmentController : MonoBehaviour
 
         ResetTrans(gear);
 
-        ItemPoolManager.instance.ReturnPool(gear.gameObject);
+        //ItemPoolManager.instance.ReturnPool(gear.gameObject);
     }
 
 

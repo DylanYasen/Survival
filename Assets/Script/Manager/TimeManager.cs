@@ -34,13 +34,14 @@ public class TimeManager : MonoBehaviour
 
     private bool isAm;
 
+    private bool timeIsSet;
+
     void Awake()
     {
         m_sun = GameObject.FindWithTag("Sun").transform;
         timeGUI = GameObject.FindWithTag("TimeGUI").GetComponent<Text>();
 
         //timeGUI = 
-
         // clock setting 
 
         //if (PhotonNetwork.offlineMode || PhotonNetwork.isMasterClient)
@@ -50,7 +51,6 @@ public class TimeManager : MonoBehaviour
         //}
 
         passedDay = 0;
-        _realTimeSecPassed = 0;
         _timeOfDay = 0;
 
         isAm = true;
@@ -70,10 +70,21 @@ public class TimeManager : MonoBehaviour
         _degreeRotation = DEGREE_PER_SECOND * DAY_IN_SECOND / GAME_DAY_IN_SECOND;
 
         SetClock();
+
+
     }
+
+    void Start()
+    {
+
+    }
+
 
     void FixedUpdate()
     {
+        if (!timeIsSet)
+            return;
+
         float dt = Time.deltaTime;
 
         // rotate run
@@ -85,7 +96,6 @@ public class TimeManager : MonoBehaviour
 
         // convert real dt to game dt
         deltaTime = dt / GAME_SECOND_IN_SECOND;
-
     }
 
     void SetClock()
@@ -152,8 +162,9 @@ public class TimeManager : MonoBehaviour
 
         _realTimeSecPassed = (float)secondPassedSinceStarted;
 
+        timeIsSet = true;
 
-
+        m_sun.Rotate(new Vector3(_realTimeSecPassed / DEGREE_PER_SECOND, 0, 0));
     }
 
 }

@@ -46,7 +46,7 @@ public class Pickup : StaticEntity
 
         // add to item pool right now for testing
         // it should be already in the pool
-        ItemPoolManager.instance.AddToPool(gameObject);
+        //ItemPoolManager.instance.AddToPool(gameObject);
         gameObject.SetActive(false);
 
         // broadcast

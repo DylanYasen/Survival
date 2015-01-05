@@ -45,7 +45,7 @@ public class EntityStats
         if (cur_hp <= 0)
             m_entity.Die();
 
-        Debug.Log("lost " + amt + " hp, " + cur_hp + " left.");
+        //Debug.Log("lost " + amt + " hp, " + cur_hp + " left.");
     }
 
     public void AddHP(int amt = 1)
@@ -64,7 +64,7 @@ public class EntityStats
             return true;
         }
 
-        Debug.Log("not enough sp");
+        //Debug.Log("not enough sp");
         return false;
     }
 
@@ -83,7 +83,7 @@ public class EntityStats
             return true;
         }
 
-        Debug.Log("not enough hydration");
+        //Debug.Log("not enough hydration");
         return false;
     }
 
@@ -102,7 +102,7 @@ public class EntityStats
             return true;
         }
 
-        Debug.Log("not enough hunger");
+        //Debug.Log("not enough hunger");
         return false;
     }
 
@@ -121,7 +121,7 @@ public class EntityStats
             return true;
         }
 
-        Debug.Log("not enough hunger");
+        //Debug.Log("not enough warmth");
         return false;
     }
 

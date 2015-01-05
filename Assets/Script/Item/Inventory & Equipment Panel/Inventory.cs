@@ -275,17 +275,39 @@ public class Inventory : MonoBehaviour
     {
         EquipableItem gear = (EquipableItem)items[slotNum];
 
-        GameObject model = ItemPoolManager.instance.GetItemModel(gear.itemID);
+        //GameObject model = ItemPoolManager.instance.GetItemModel(gear.itemID);
 
-        Player.instance.m_gearController.Equip(gear.equipType, model.transform);
+        if (PhotonNetwork.offlineMode)
+        {
+            // instantiate directely
+            //GameObject obj
 
+            Player.instance.m_gearController.Equip((int)gear.equipType, gear.itemName);
+        }
+        else
+        {
+            //itemObj = PhotonNetwork.Instantiate("Prefab/Items/" + gear.itemName, Vector3.zero, Quaternion.identity, 0);
+            //itemObj.GetComponent<Pickup>().enabled = false;
+
+            //Player.instance.m_controller.GetComponent<PhotonView>().RPC("Equip", PhotonTargets.All, gear.equipType, itemObj.transform);
+            Player.instance.m_photonView.RPC("Equip", PhotonTargets.All, (int)gear.equipType, gear.itemName);
+        }
     }
 
     public void UnEquipItem(int slotNum)
     {
         EquipableItem gear = (EquipableItem)items[slotNum];
 
-        Player.instance.m_gearController.UnEquip(gear.equipType);
+        if (PhotonNetwork.offlineMode)
+        {
+            // instantiate directely
+            //GameObject obj
+
+            Player.instance.m_gearController.UnEquip((int)gear.equipType);
+        }
+        else
+            Player.instance.m_photonView.RPC("UnEquip", PhotonTargets.All, (int)gear.equipType);
+
     }
 
 

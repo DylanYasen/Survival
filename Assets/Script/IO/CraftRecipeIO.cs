@@ -46,6 +46,17 @@ public class CraftRecipeIO : MonoBehaviour
 
     private void LoadRecipeData()
     {
+        //#if UNITY_WEBPLAYER
+
+        TextAsset text = Resources.Load("IO/CraftingRecipes") as TextAsset;
+
+        Debug.Log(text);
+        Debug.Log(text.ToString());
+
+        RecipeData = JSONNode.LoadFromBase64(text.ToString());
+        Debug.Log(RecipeData.ToString());
+
+        /*
         if (File.Exists("Assets/Resources/IO/CraftingRecipes.recipes"))
         {
 
@@ -67,6 +78,7 @@ public class CraftRecipeIO : MonoBehaviour
         {
             Debug.Log(" doesn't exist.");
         }
+        */
     }
 
     private void ProcessRecipeData()
@@ -149,7 +161,7 @@ public class CraftRecipeIO : MonoBehaviour
         */
 
         // encode later
-        var file = File.CreateText("Assets/Resources/IO/CraftingRecipes.recipes");
+        var file = File.CreateText("Assets/Resources/IO/CraftingRecipes.json");
 
 
         //var file = File("Assets/Resources/IO/" + "CraftingRecipes.recipes",FileMode.Append);

@@ -12,13 +12,11 @@ public enum Traits
     Prodigy
 }
 
-/*
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStatsController))]
 [RequireComponent(typeof(PlayerEquipmentController))]
 [RequireComponent(typeof(PlayerInteractionController))]
 [RequireComponent(typeof(PhotonView))]
-*/
 
 public class Player : DynamicEntity
 {
@@ -39,6 +37,10 @@ public class Player : DynamicEntity
     {
         // maybe move to generic class
         m_photonView = GetComponent<PhotonView>();
+        m_statController = gameObject.GetComponent<PlayerStatsController>();
+        m_gearController = gameObject.GetComponent<PlayerEquipmentController>();
+        m_interactController = gameObject.GetComponent<PlayerInteractionController>();
+        m_controller = gameObject.GetComponent<PlayerController>();
 
         if (m_photonView.isMine)
         {
@@ -48,12 +50,15 @@ public class Player : DynamicEntity
 
             base.Awake();
 
-            m_statController = gameObject.AddComponent<PlayerStatsController>();
-            m_gearController = gameObject.AddComponent<PlayerEquipmentController>();
-            m_interactController = gameObject.AddComponent<PlayerInteractionController>();
+            //m_statController.enabled = true;
+            //m_gearController.enabled = true;
+            m_interactController.enabled = true;
         }
-
-        m_controller = gameObject.AddComponent<PlayerController>();
-
+        else
+        {
+            //m_statController.enabled = false;
+            //m_gearController.enabled = false;
+            m_interactController.enabled = false;
+        }
     }
 }
