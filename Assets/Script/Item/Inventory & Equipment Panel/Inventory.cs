@@ -23,6 +23,8 @@ public class Inventory : MonoBehaviour
     private RectTransform panelRectrans;
     private RectTransform dragItemIconRectrans;
 
+    Dictionary<int, RecipeData> recipes;
+
     void Awake()
     {
         panel = InventoryPanel.instance;
@@ -45,6 +47,8 @@ public class Inventory : MonoBehaviour
         panelRectrans = panel.GetComponent<RectTransform>();
         dragItemIconRectrans = panel.dragItemIcon.GetComponent<RectTransform>();
 
+
+        recipes = CraftRecipeIO.instance.craftRecipes;
         //AddItemByID(0);
 
         // deactivate inventory gui
@@ -211,9 +215,10 @@ public class Inventory : MonoBehaviour
     /////
     public void Craft()
     {
-        Dictionary<int, List<RecipeItem>> recipes = CraftRecipeIO.instance.craftRecipes;
-
+        //Dictionary<int, List<RecipeItem>> recipes = CraftRecipeIO.instance.craftRecipes;
         //List<RecipeItem> avaliableRecipes = new List<RecipeItem>();
+
+        /*
 
         int resultID = -1;
 
@@ -267,6 +272,9 @@ public class Inventory : MonoBehaviour
             // result
             AddItemByID(resultID);
         }
+         
+          
+        */
     }
 
     // ******* Redesign ********

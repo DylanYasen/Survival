@@ -1,1 +1,1 @@
-AgMAAAAQUmVzdWx0IEl0ZW0gTmFtZQMFVG9yY2gSUmVzdWx0IEl0ZW0gQW1vdW50BAEAAAAKQ29tcG9uZW50cwECAAAAAgIAAAAJSXRlbSBOYW1lAwVGbGludA9SZXF1aXJlZCBBbW91bnQEAQAAAAICAAAACUl0ZW0gTmFtZQMETG9ncw9SZXF1aXJlZCBBbW91bnQEAQAAAA==
+{"Recipes":[ {"Result Item Name":"Campfire", "Result Item Amount":"1", "Components":[ {"Item Name":"Flint", "Required Amount":"1"}, {"Item Name":"Logs", "Required Amount":"3"} ]}, {"Result Item Name":"Torch", "Result Item Amount":"1", "Components":[ {"Item Name":"Flint", "Required Amount":"1"}, {"Item Name":"Logs", "Required Amount":"1"} ]} ]}
