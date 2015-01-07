@@ -59,40 +59,46 @@ public class Inventory : MonoBehaviour
     void Update()
     {
         // drag item 
-
-        /*
         if (isDraggingItem)
         {
-            Vector3 pos = (Input.mousePosition - panelRectrans.position);
-            dragItemIconRectrans.localPosition = new Vector2(pos.x - 25, pos.y - 25);
+            //Vector3 pos = Input.mousePosition;
+            //pos.x -= 25;
+            //pos.y -= 25;
+            //dragItemIconRectrans.position = new Vector2(pos.x, pos.y);
+            //dragItemIconRectrans.position = pos;
+
+            dragItemIconRectrans.position = Input.mousePosition;
         }
-         */
     }
 
     // add item by itemID
-    public void AddItemByID(int id)
+    public bool AddItemByID(int id)
     {
         // guard
         if (ItemDatabase.instance == null)
         {
             Debug.Log("itemdatabase is null");
-            return;
+            return false;
         }
 
-        addItemToEmptySlot(LookUpItem(id));
+        return addItemToEmptySlot(LookUpItem(id));
     }
 
-    void addItemToEmptySlot(Item item)
+    bool addItemToEmptySlot(Item item)
     {
+        bool successfullyAdded = false;
+
         // loop through itemlist to find empty slot
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].itemName == null)
             {
                 items[i] = item;
+                successfullyAdded = true;
                 break;
             }
         }
+        return successfullyAdded;
     }
 
     Item LookUpItem(int id)
@@ -166,6 +172,24 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public void ShowDraggedItem(Item item, int slotNum)
+    {
+        draggedItem = item;
+        panel.dragItemIcon.enabled = true;
+        isDraggingItem = true;
+        panel.dragItemIcon.sprite = item.itemIcon;
+        draggedItemSlotNum = slotNum;
+
+        HideItemDescription();
+    }
+
+    public void HideDraggedItem()
+    {
+        isDraggingItem = false;
+        panel.dragItemIcon.enabled = false;
+        draggedItem = null;
+    }
+
     // * work done
     // 1. unequip old item
     // 3. equip the new item
@@ -187,6 +211,7 @@ public class Inventory : MonoBehaviour
         hasSelectedItem = true;
         selectedItem = items[slotNum];
         selectedItemNum = slotNum;
+        slots[slotNum].HighlightSlot();
     }
 
     public void UnselectItem()
@@ -215,67 +240,137 @@ public class Inventory : MonoBehaviour
     /////
     public void Craft()
     {
-        //Dictionary<int, List<RecipeItem>> recipes = CraftRecipeIO.instance.craftRecipes;
-        //List<RecipeItem> avaliableRecipes = new List<RecipeItem>();
+        List<int> avaliableRecipe = new List<int>(); // all recipes whose first item = first item in inventory
+        List<int> componentIDs;
 
-        /*
-
-        int resultID = -1;
-
-        bool itemsMatched = true;
-
-        // look for recipes contain this first item in inventory
-        for (int j = 0; j <= ItemDatabase.instance.ItemAmout; j++)
+        foreach (KeyValuePair<int, RecipeData> entry in recipes)
         {
-            if (!recipes.ContainsKey(j))
-                continue;
+            componentIDs = entry.Value.componentsID;
+            Debug.Log("Component IDs: " + componentIDs);
 
-            //if(items[i].itemID == recipes[])
-            if (items[0].itemID == recipes[j][0].ItemID)
+            // first item in recipe = first item Player has
+            if (items[0].itemID == componentIDs[0])
             {
-                resultID = j;
+                Debug.Log("Recipe Found. First Item ID is: " + componentIDs[0]);
 
-                Debug.Log("get result id ");
-                Debug.Log(resultID);
+                bool matched = true; // default by true. If not matched change to false
+                int componentCount = componentIDs.Count;
 
-                break;
-                // add to a queue or sth
-                // dont break;
+                Debug.Log("Component Count: " + componentCount);
+
+                // check if match
+                // inventory : recipe
+                for (int i = 1; i < componentCount; i++)
+                    if (items[i].itemID != componentIDs[i])
+                    {
+                        Debug.Log(i + "th slot not matched.");
+                        Debug.Log("Break");
+
+                        matched = false;
+                        break;
+                    }
+
+                // not matched 
+                // move to next
+                if (!matched)
+                {
+                    Debug.Log("Items Not Matched. Continue.");
+                    continue;
+                }
+
+                // ####### Matched #######
+                int resultItemAmount = entry.Value.resultItemAmount;
+                int resultItemID = entry.Key;
+                Debug.Log("Matched. \n" + " Result Item ID " + resultItemID + "\nResult Item Amount: " + resultItemAmount);
+
+                // remove componnent item in inventory
+                for (int i = 0; i < componentCount; i++)
+                    items[i] = new Item();
+
+                Debug.Log("All Item Removed");
+
+                // add result item
+                for (int i = 0; i < resultItemAmount; i++)
+                    AddItemByID(resultItemID);
+
+                Debug.Log("Added " + resultItemAmount + " Item:" + resultItemID);
+            }
+            else
+            {
+                Debug.Log("Recipe First Item ID not Matched. Continue.");
+                continue;
             }
         }
+    }
+    //Debug.Log("result item ID: " + entry.Key);
 
-        if (resultID == -1)
-            return;
+    //RecipeData value = entry.Value;
 
-        // how many components
-        int recipeComponentCount = recipes[resultID].Count;
+    //Debug.Log("result item amount: " + value.resultItemAmount);
 
-        // check item matching
+    //foreach (int i in value.componentsID)
+    //    Debug.Log("component item id: " + i);
+
+    //Debug.Log("*************");
+
+
+    //Dictionary<int, List<RecipeItem>> recipes = CraftRecipeIO.instance.craftRecipes;
+    //List<RecipeItem> avaliableRecipes = new List<RecipeItem>();
+    /*
+    int resultID = -1;
+    bool itemsMatched = true;
+
+    // look for recipes contain this first item in inventory
+    for (int j = 0; j <= ItemDatabase.instance.ItemAmout; j++)
+    {
+        if (!recipes.ContainsKey(j))
+            continue;
+
+        //if(items[i].itemID == recipes[])
+        if (items[0].itemID == recipes[j][0].ItemID)
+        {
+            resultID = j;
+
+            Debug.Log("get result id ");
+            Debug.Log(resultID);
+
+            break;
+            // add to a queue or sth
+            // dont break;
+        }
+    }
+
+    if (resultID == -1)
+        return;
+
+    // how many components
+    int recipeComponentCount = recipes[resultID].Count;
+
+    // check item matching
+    for (int i = 0; i < recipeComponentCount; i++)
+    {
+        if (items[i].itemID != recipes[resultID][i].ItemID)
+        {
+            itemsMatched = false;
+            break;
+        }
+    }
+
+    // all matched
+    if (itemsMatched)
+    {
+        // remove all items 
         for (int i = 0; i < recipeComponentCount; i++)
         {
-            if (items[i].itemID != recipes[resultID][i].ItemID)
-            {
-                itemsMatched = false;
-                break;
-            }
+            items[i] = new Item();
         }
 
-        // all matched
-        if (itemsMatched)
-        {
-            // remove all items 
-            for (int i = 0; i < recipeComponentCount; i++)
-            {
-                items[i] = new Item();
-            }
-
-            // result
-            AddItemByID(resultID);
-        }
+        // result
+        AddItemByID(resultID);
+    }
          
           
-        */
-    }
+    */
 
     // ******* Redesign ********
     // maybe combine

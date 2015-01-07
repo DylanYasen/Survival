@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler
 {
     public enum SlotType
     {
@@ -73,6 +73,48 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // left click
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            // slot not empty 
+            if (ContainsItem())
+            {
+                // swap dragged item if is dragging //
+                if (inventory.isDraggingItem)
+                {
+                    SwapDraggedItem();
+                    return;
+                }
+
+                // item selection
+                if (inventory.hasSelectedItem)
+                    inventory.UnselectItem();
+                else
+                    inventory.SelectItem(slotNum);
+            }
+
+            // slot empty
+            else
+            {
+                // place dragged item if dragging
+                if (inventory.isDraggingItem)
+                {
+                    inventory.items[slotNum] = inventory.draggedItem;
+                    inventory.HideDraggedItem();
+
+                    return;
+                }
+
+                // unselect item if selected
+                if (inventory.hasSelectedItem)
+                    inventory.UnselectItem();
+            }
+        }
+
+        // ********
+        // TODO: combine with above.   contains item/ not contain
+        // ********
+
         // double click to use / equip
         if (eventData.clickCount == 2)
         {
@@ -91,6 +133,25 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
                 equippedMark.enabled = isEquipped;
             }
         }
+
+        /* if same item -> unselect it 
+       if (inventory.selectedItemNum == slotNum)
+          inventory.UnselectItem();
+
+       if different -> unselect old -> select new
+       else
+       {
+          inventory.UnselectItem();
+           inventory.SelectItem(slotNum);
+       }
+   */
+        // not selected item
+        //else
+        //    inventory.SelectItem(slotNum);
+
+
+
+
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -100,11 +161,9 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
         // left click 
         // select item
+        /*
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-
-
-
             // ***************
             // change to just swap
             // contain or not doesn't really matter
@@ -123,9 +182,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
                 Debug.Log("selected");
             }
         }
-
-
-
+        */
 
         // right click
         // to use item
@@ -156,6 +213,21 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         }
     }
 
+    private void SwapDraggedItem()
+    {
+        // put the item in this slot to the dragged item's slot
+        inventory.items[inventory.draggedItemSlotNum] = inventory.items[slotNum];
+
+        // put dragged item in this slot
+        inventory.items[slotNum] = inventory.draggedItem;
+
+        // hide dragged item
+        inventory.HideDraggedItem();
+
+        // hide item amount
+        itemAmountGUI.enabled = false;
+    }
+
     private void SwapSelectedItem()
     {
         // put the item in this slot
@@ -171,7 +243,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         inventory.UnselectItem();
     }
 
-    public void HighlightSlot(bool selected)
+    public void HighlightSlot(bool selected = true)
     {
         if (selected)
             slotBackgroundImage.color = Color.red;
@@ -197,6 +269,28 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         // hide item description
         if (ContainsItem())
             inventory.HideItemDescription();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (inventory == null)
+            return;
+
+        if (ContainsItem())
+        {
+            // unselect selected item
+            if (inventory.hasSelectedItem)
+                inventory.UnselectItem();
+
+            // display dragged item icon at mouse position
+            inventory.ShowDraggedItem(inventory.items[slotNum], slotNum);
+
+            // delete the dragged item
+            inventory.items[slotNum] = new Item();
+
+            // hide item amount
+            itemAmountGUI.enabled = false;
+        }
     }
 
     /*

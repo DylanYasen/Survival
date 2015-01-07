@@ -7,6 +7,7 @@ TextureImporter:
     21300004: Torch
     21300006: Meat
     21300008: Ignited Torch
+    21300010: Campfire
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -93,6 +94,16 @@ TextureImporter:
         serializedVersion: 2
         x: 620
         y: 963
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Campfire
+      rect:
+        serializedVersion: 2
+        x: 621
+        y: 791
         width: 50
         height: 50
       alignment: 0

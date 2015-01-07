@@ -33,7 +33,11 @@ public class Pickup : StaticEntity
         }
 
         // add item to the Inventory.
-        InventoryPanel.instance.inventory.AddItemByID(itemID);
+
+        if (!InventoryPanel.instance.inventory.AddItemByID(itemID))
+            return;
+
+        //InventoryPanel.instance.inventory.AddItemByID(itemID);
 
         // ****************
         // add effects here

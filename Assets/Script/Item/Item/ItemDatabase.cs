@@ -60,7 +60,6 @@ public class ItemDatabase : MonoBehaviour
         rawMeat.itemAmount = 1;
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
-        rawMeat.LoadIcon();
         items.Add(rawMeat);
 
         // ID: 1
@@ -73,7 +72,6 @@ public class ItemDatabase : MonoBehaviour
         logs.itemAmount = 1;
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
-        logs.LoadIcon();
         items.Add(logs);
 
         // ID: 2
@@ -86,7 +84,6 @@ public class ItemDatabase : MonoBehaviour
         flint.itemAmount = 1;
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
-        flint.LoadIcon();
         items.Add(flint);
 
         // ID: 3
@@ -103,7 +100,6 @@ public class ItemDatabase : MonoBehaviour
         Torch.itemAmount = 1;
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
-        Torch.LoadIcon();
         items.Add(Torch);
 
         // ID:4
@@ -116,12 +112,20 @@ public class ItemDatabase : MonoBehaviour
 
         //refreshingWater.itemEffects.Add(new OnUseRecoverSP(4));
         //refreshingWater.InitEffect();
-        Torch_Ignited.LoadIcon();
-        items.Add(Torch_Ignited);
-
         Torch_Ignited.workTimeNeeded = 90;
 
+        items.Add(Torch_Ignited);
+
+        // ID:5
+        ConsumableItem Campfire = new ConsumableItem("Campfire");
+        Campfire.itemID = ++itemIDCounter;
+        Campfire.itemAmount = 1;
+
+        items.Add(Campfire);
+
+        // keep this at the bottom
         ItemAmout = itemIDCounter;
+
         /*
         EquipableItem axe = new EquipableItem();
         axe.itemName = "Axe";

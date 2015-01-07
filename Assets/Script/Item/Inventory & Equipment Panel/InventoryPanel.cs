@@ -14,6 +14,8 @@ public class InventoryPanel : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        dragItemIcon = transform.GetChild(1).GetComponent<Image>();
     }
 
     public void SwithGUI(bool b)
