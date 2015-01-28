@@ -19,6 +19,16 @@ interface Cookable
 */
 // interfaces are not really useful in this case
 
+interface Fuel
+{
+    int GetFuelAmt();
+}
+
+interface Cookable
+{
+    int GetCookedItemID();
+}
+
 [System.Serializable]
 public class Item
 {

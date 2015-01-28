@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Building : StaticEntity
+public class Campfire : HeatSource
 {
     void Start()
     {
@@ -12,5 +12,6 @@ public class Building : StaticEntity
     {
 
     }
+
 
 }

@@ -185,10 +185,9 @@ public class Network : Photon.MonoBehaviour
     {
         // should be in a loader class
 
-        string prefix = "Prefab/Items/";
+        //string prefix = "Prefab/Items/";
         //string[] itemNames = new string[] { "Flint", "Ignited Torch", "Logs", "Meat" };
-        string[] itemNames = new string[] { "Flint",  "Logs", "Meat" };
-
+        string[] itemNames = new string[] { "Flint", "Logs", "Meat" };
 
         //Vector3[] pos = new Vector3[3] { new Vector3(200, 0, 200), new Vector3(215, 0, 215), new Vector3(240, 0, 240) };
 
@@ -206,7 +205,7 @@ public class Network : Photon.MonoBehaviour
                 itemPos.x = randPos.x + 250;
                 itemPos.z = randPos.y + 250;
 
-                PhotonNetwork.Instantiate(prefix + name, itemPos, Quaternion.identity, 0);
+                PhotonNetwork.Instantiate(Constants.itemPrefabPathPrefix + name, itemPos, Quaternion.identity, 0);
             }
         }
     }

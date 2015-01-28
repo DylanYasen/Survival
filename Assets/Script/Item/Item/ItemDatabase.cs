@@ -117,7 +117,7 @@ public class ItemDatabase : MonoBehaviour
         items.Add(Torch_Ignited);
 
         // ID:5
-        ConsumableItem Campfire = new ConsumableItem("Campfire");
+        BuildableItem Campfire = new BuildableItem("Campfire");
         Campfire.itemID = ++itemIDCounter;
         Campfire.itemAmount = 1;
 

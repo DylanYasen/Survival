@@ -118,7 +118,9 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         // double click to use / equip
         if (eventData.clickCount == 2)
         {
-            if (inventory.items[slotNum] is EquipableItem)
+            Item item = inventory.items[slotNum];
+
+            if (item is EquipableItem)
             {
                 if (!isEquipped)
                 {
@@ -131,6 +133,23 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
 
                 isEquipped = !isEquipped;
                 equippedMark.enabled = isEquipped;
+            }
+
+            // TODO: right click to cancel on hold building
+            else if (item is BuildableItem)
+            {
+                BuildableItem building = (BuildableItem)item;
+
+                BuildingManager buildManager = BuildingManager.instance;
+                if (buildManager.isBuildingOnHold)
+                {
+                    // cancel previous holding
+                    // hold the new building
+                }
+                else
+                {
+                    buildManager.HoldBuilding(building, slotNum);
+                }
             }
         }
 
@@ -148,10 +167,6 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
         // not selected item
         //else
         //    inventory.SelectItem(slotNum);
-
-
-
-
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -211,21 +226,25 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
                 }
             }
         }
+
     }
 
     private void SwapDraggedItem()
     {
-        // put the item in this slot to the dragged item's slot
-        inventory.items[inventory.draggedItemSlotNum] = inventory.items[slotNum];
+        // store the previous dragging item
+        Item draggedItem = inventory.draggedItem;
+
+        // drag this slot's item
+        inventory.DragItem(slotNum);
 
         // put dragged item in this slot
-        inventory.items[slotNum] = inventory.draggedItem;
+        inventory.items[slotNum] = draggedItem;
 
-        // hide dragged item
-        inventory.HideDraggedItem();
+        //// hide dragged item
+        //inventory.HideDraggedItem();
 
         // hide item amount
-        itemAmountGUI.enabled = false;
+        //itemAmountGUI.enabled = false;
     }
 
     private void SwapSelectedItem()
@@ -283,7 +302,7 @@ public class InventorySlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHa
                 inventory.UnselectItem();
 
             // display dragged item icon at mouse position
-            inventory.ShowDraggedItem(inventory.items[slotNum], slotNum);
+            inventory.DragItem(slotNum);
 
             // delete the dragged item
             inventory.items[slotNum] = new Item();

@@ -3,11 +3,11 @@ using System.Collections;
 
 public class BuildingManager : MonoBehaviour
 {
-    public GameObject building;
+    private GameObject building;
     private Transform buildingTrans;
     private Vector3 cachedPos;
 
-    public bool buildingOnHold { get; private set; }
+    public bool isBuildingOnHold { get; private set; }
 
     private RaycastHit hit;
     private Ray ray;
@@ -15,36 +15,42 @@ public class BuildingManager : MonoBehaviour
 
     public static BuildingManager instance;
 
+    private int onHoldItemSlotNum;
+    private BuildableItem onHoldItem;
+
     void Awake()
     {
         instance = this;
     }
 
-    void Start()
-    {
-        buildingOnHold = false;
-        mainCam = Camera.main;
-
-    }
-
     void Update()
     {
-        if (buildingOnHold)
+        if (isBuildingOnHold)
         {
             LocatePosition();
             buildingTrans.position = cachedPos;
 
-
             // place input ** need to redesign for mobile
             if (Input.GetMouseButtonDown(0))
-            {
                 if (isLegalPosition())
-                {
-                    OnPlaceBuilding();
-                }
-            }
+                    PlaceBuilding();
         }
     }
+
+    public void HoldBuilding(BuildableItem item, int slotNum)
+    {
+        mainCam = Camera.main;
+        onHoldItem = item;
+        onHoldItemSlotNum = slotNum;
+
+        // create building
+        this.building = Instantiate(item.buildingModel, Vector2.zero, Quaternion.identity) as GameObject;
+        buildingTrans = building.transform;
+
+        // update toggle
+        isBuildingOnHold = true;
+    }
+
 
     private bool isLegalPosition()
     {
@@ -56,32 +62,28 @@ public class BuildingManager : MonoBehaviour
         ray = mainCam.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 1000))
-        {
-            if (hit.collider.tag == "Terrain")
-                cachedPos.Set(hit.point.x, 0, hit.point.z);
-        }
-
+            //if (hit.collider.tag == "Terrain")
+            cachedPos.Set(hit.point.x, 0, hit.point.z);
     }
 
-    public void HoldModel(GameObject building)
-    {
-        buildingOnHold = true;
-        this.building = building;
-        buildingTrans = building.transform;
-    }
-
-    private void OnPlaceBuilding()
+    private void PlaceBuilding()
     {
         // 1. place the building
         // 2. unhold the building
         // 3. remove item from inventory
         // 4.
+
+        onHoldItem.OnBuild(buildingTrans.position);
+
+        Destroy(building);
+
+        isBuildingOnHold = false;
+
+        // remove from inventory
+        InventoryPanel.instance.inventory.RemoveItemAtSlot(onHoldItemSlotNum);
+        onHoldItemSlotNum = -1;
+        onHoldItem = null;
+
     }
-
-    public void PlaceModel()
-    {
-
-    }
-
 
 }

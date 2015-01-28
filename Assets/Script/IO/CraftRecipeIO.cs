@@ -38,7 +38,7 @@ public class CraftRecipeIO : MonoBehaviour
     private string RecipeRaw;
     private JSONNode RecipeData;
 
-    public Dictionary<int, RecipeData> craftRecipes= new Dictionary<int, RecipeData>();
+    public Dictionary<int, RecipeData> craftRecipes = new Dictionary<int, RecipeData>();
 
     void Awake()
     {
@@ -127,6 +127,21 @@ public class CraftRecipeIO : MonoBehaviour
             // store the recipe data
             craftRecipes.Add(resultItemID, recipeData);
         }
+     
+        foreach (KeyValuePair<int, RecipeData> entry in craftRecipes)
+        {
+            Debug.Log("result item ID: " + entry.Key);
+
+            RecipeData value = entry.Value;
+
+            Debug.Log("result item amount: " + value.resultItemAmount);
+
+            foreach (int i in value.componentsID)
+                Debug.Log("component item id: " + i);
+
+            Debug.Log("*************");
+        }
+    }
 
         //string resultItemName = RecipeData["Result Item Name"];
         //int resultItemID = ItemDatabase.instance.GetItemIDFromName(resultItemName);
@@ -156,23 +171,11 @@ public class CraftRecipeIO : MonoBehaviour
          
         */
 
-        foreach (KeyValuePair<int, RecipeData> entry in craftRecipes)
-        {
-            Debug.Log("result item ID: " + entry.Key);
-
-            RecipeData value = entry.Value;
-
-            Debug.Log("result item amount: " + value.resultItemAmount);
-
-            foreach (int i in value.componentsID)
-                Debug.Log("component item id: " + i);
-
-            Debug.Log("*************");
-        }
-    }
+   
 
     public void AddRecipe()
     {
+#if !UNITY_WEBPLAYER
         m_recipeData = "";
 
         int index = 0;
@@ -206,6 +209,7 @@ public class CraftRecipeIO : MonoBehaviour
 
         string dataText = File.ReadAllText(recipeFilePath);
 
+
         var newData = JSONNode.Parse(dataText);
 
         Debug.Log(newData.ToString());
@@ -217,6 +221,9 @@ public class CraftRecipeIO : MonoBehaviour
 
         //SaveMapData(ParsedData);
         SaveMapData(newData);
+
+#endif
+
     }
 
     void InitRecipeFile()

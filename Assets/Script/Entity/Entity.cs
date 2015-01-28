@@ -9,6 +9,7 @@ public abstract class Entity : MonoBehaviour
     public Transform floatTextSpawnPoint;
 
     public Animator m_anim { get; private set; }
+    public Transform m_trans { get; private set; }
 
     public PhotonView m_photonView { get; private set; }
 
@@ -22,8 +23,8 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         m_stats.Init(this);
-
         m_anim = GetComponent<Animator>();
+        m_trans = transform;
 
         // if (!PhotonNetwork.offlineMode)
         //   m_photonView = gameObject.AddComponent<PhotonView>();

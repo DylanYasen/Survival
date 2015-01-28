@@ -15,6 +15,8 @@ public class Inventory : MonoBehaviour
     public Item selectedItem { get; private set; }
     public int selectedItemNum { get; private set; }
 
+    public bool isHoldingBuilding { get; private set; }
+
     public Item interactingItem { get; private set; }
 
     public List<InventorySlot> slots = new List<InventorySlot>();
@@ -24,7 +26,7 @@ public class Inventory : MonoBehaviour
     private RectTransform dragItemIconRectrans;
 
     Dictionary<int, RecipeData> recipes;
-
+    
     void Awake()
     {
         panel = InventoryPanel.instance;
@@ -53,6 +55,9 @@ public class Inventory : MonoBehaviour
 
         // deactivate inventory gui
         //panel.gameObject.SetActive(false);
+
+        // testing area
+        AddItemByID(5);
     }
 
 
@@ -120,7 +125,6 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
-
     public void CheckIfItemExist(int id, Item item)
     {
         for (int i = 0; i < items.Count; i++)
@@ -148,6 +152,17 @@ public class Inventory : MonoBehaviour
         items[slotNum] = LookUpItem(newItemID);
     }
 
+    public void RemoveItemAtSlot(int slot)
+    {
+        if (slot < 0 || slot > items.Count)
+        {
+            Debug.Log("remove item at " + slot + " failed. || index out of bounds");
+            return;
+        }
+
+        items[slot] = new Item();
+    }
+
     public void SelectedItemInteract()
     {
         Debug.Log("pass");
@@ -172,12 +187,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void ShowDraggedItem(Item item, int slotNum)
+    public void DragItem(int slotNum)
     {
-        draggedItem = item;
+        draggedItem = items[slotNum];
         panel.dragItemIcon.enabled = true;
         isDraggingItem = true;
-        panel.dragItemIcon.sprite = item.itemIcon;
+        panel.dragItemIcon.sprite = draggedItem.itemIcon;
         draggedItemSlotNum = slotNum;
 
         HideItemDescription();
@@ -413,10 +428,32 @@ public class Inventory : MonoBehaviour
 
     }
 
+    // TODO: Drop recipe for some items
+    // such as building recipe
+    public void DropItem(Item item)
+    {
+        HideDraggedItem();
+
+        // create item on floor
+        if (PhotonNetwork.offlineMode)
+        {
+            Debug.Log("local game item drop");
+            // instantiate directly
+        }
+
+        else
+        {
+            Debug.Log(draggedItemSlotNum);
+            Debug.Log(item.itemName);
+            Debug.Log(Constants.itemPrefabPathPrefix + item.itemName);
+            PhotonNetwork.Instantiate(Constants.itemPrefabPathPrefix + item.itemName, Player.instance.m_trans.position, Quaternion.identity, 0);
+        }
+    }
+
 
     // ********* Building Placement Trigger  ********* //
     public void TriggerBuildingPlacement()
     {
-        BuildingManager.instance.HoldModel(ItemPoolManager.instance.GetItemModel(selectedItem.itemID));
+        //BuildingManager.instance.HoldModel(ItemPoolManager.instance.GetItemModel(selectedItem.itemID));
     }
 }

@@ -1,10 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HeatSource : StaticEntity
+public class HeatSource : Building
 {
     public int heatAmout = 1;
     public float heatRate;
+
+    protected int decayRate = 0;
+
+    protected Light light { get; private set; }
+
+    // TODO: partical decay to indicate hp
+
+    protected virtual void Awake()
+    {
+        base.Awake();
+        light = transform.GetChild(1).GetChild(0).GetComponent<Light>();
+    }
+
+    protected virtual void Update()
+    {
+        m_stats.LoseHP(decayRate);
+    }
 
     protected override void OnTriggerEnter(Collider other)
     {
@@ -25,4 +42,11 @@ public class HeatSource : StaticEntity
         if (collidedObjTag == "Player")
             player.m_statController.AddWarmth(heatAmout, heatRate);
     }
+
+    [RPC]
+    public void AddFuel(int amt)
+    {
+        m_stats.AddHP(amt);
+    }
+
 }
